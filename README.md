@@ -1,6 +1,7 @@
 # 🚀 gopush
 
-![banner](assets/banner-gopush.txt)
+![gopush demo](assets/demo.gif)
+
 
 > Assistant Git interactif en ligne de commande – `commit`, `push`, `tag`, `release`… en une commande.
 
