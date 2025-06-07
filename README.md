@@ -27,6 +27,6 @@
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/Karlblock/gopush/main/install.sh | bash
-
+```
 
 [![Buy Me a Coffee](https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=karlblock&button_colour=FFDD00&font_colour=000000&font_family=Arial&outline_colour=000000&coffee_colour=ffffff)](https://www.buymeacoffee.com/karlblock)
