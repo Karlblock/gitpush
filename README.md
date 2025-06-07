@@ -1,18 +1,19 @@
 # 🚀 gopush
 
 ```
-   ____ _____  ____  __  _______/ /_ 
-  / __ `/ __ \/ __ \/ / / / ___/ __ \
- / /_/ / /_/ / /_/ / /_/ (__  ) / / /
- \__, /\____/ .___/\__,_/____/_/ /_/ 
-/____/     /_/
+   ____                         _     
+  / ___| ___  _ __   ___  _ __ | |__  
+ | |  _ / _ \| '_ \ / _ \| '_ \| '_ \ 
+ | |_| | (_) | |_) | (_) | |_) | | | |
+  \____|\___/| .__/ \___/| .__/|_| |_|
+             |_|          |_|        
 
-     🚀 gopush — by KarlBlock
+     🚀 gopush — by Karl Block
 ```
 
 [![Shell](https://img.shields.io/badge/script-shell-blue?style=flat-square&logo=gnu-bash)](https://bash.sh)
 [![Licence MIT](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
-[![Made by Cyber Normandie](https://img.shields.io/badge/made%20by-Cyber%20Normandie-blueviolet?style=flat-square)](https://cyber-normandie.fr)
+[![Made by Karl Block](https://img.shields.io/badge/made%20by-Karl%20Block-blueviolet?style=flat-square)](https://github.com/Karlblock)
 [![Releases](https://img.shields.io/github/v/release/Karlblock/gopush?style=flat-square)](https://github.com/Karlblock/gopush/releases)
 
 ---
@@ -79,4 +80,4 @@ If you like my work and want to support its development:
 
 ## 📄 Licence
 
-Distribué sous licence MIT © [Karl Block](https://github.com/Karlblock)
+Distribué sous licence MIT © [KarlBlock](https://github.com/Karlblock)
