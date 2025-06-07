@@ -14,6 +14,11 @@
 [![Made by Karl Block](https://img.shields.io/badge/made%20by-Karl%20Block-blueviolet?style=flat-square)](https://github.com/Karlblock)
 [![Releases](https://img.shields.io/github/v/release/Karlblock/gopush?style=flat-square)](https://github.com/Karlblock/gopush/releases)
 
+---
+
+## 🎥 Démo
+
+![demo](assets/demo.gif)
 
 ---
 
