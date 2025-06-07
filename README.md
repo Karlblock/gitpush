@@ -1,14 +1,27 @@
 # 🚀 gopush
 
-![banner](banner-gopush.txt)
+```
+   ____ _____  ____  __  _______/ /_ 
+  / __ `/ __ \/ __ \/ / / / ___/ __ \
+ / /_/ / /_/ / /_/ / /_/ (__  ) / / /
+ \__, /\____/ .___/\__,_/____/_/ /_/ 
+/____/     /_/
 
-
-> Git interactif  – `commit`, `push`, `tag`, `release`… .
+     🚀 gopush — by KarlBlock
+```
 
 [![Shell](https://img.shields.io/badge/script-shell-blue?style=flat-square&logo=gnu-bash)](https://bash.sh)
 [![Licence MIT](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
 [![Made by Cyber Normandie](https://img.shields.io/badge/made%20by-Cyber%20Normandie-blueviolet?style=flat-square)](https://cyber-normandie.fr)
 [![Releases](https://img.shields.io/github/v/release/Karlblock/gopush?style=flat-square)](https://github.com/Karlblock/gopush/releases)
+
+---
+
+## 🎥 Démo
+
+![demo](assets/demo.gif)
+
+---
 
 ## ✨ Fonctionnalités
 
@@ -29,4 +42,41 @@
 curl -sSL https://raw.githubusercontent.com/Karlblock/gopush/main/install.sh | bash
 ```
 
-[![Buy Me a Coffee](https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=karlblock&button_colour=FFDD00&font_colour=000000&font_family=Arial&outline_colour=000000&coffee_colour=ffffff)](https://www.buymeacoffee.com/karlblock)
+---
+
+## 🚀 Utilisation
+
+```bash
+gopush
+```
+
+Et suis les étapes dans ton terminal 🤖
+
+---
+
+## 🧩 Bonus inclus
+
+- `gomerge.sh` : fusion interactive `feat/*` → `dev` / `dev` → `main`
+- `install.sh` : installation et alias auto
+- `docs/` : page GitHub Pages du projet
+
+---
+
+## 📬 Contribuer
+
+PRs bienvenues !
+Pour toute idée d’amélioration ou intégration CI/CD → [ouvre une issue](https://github.com/Karlblock/gopush/issues)
+
+---
+
+## ☕ Buy me a coffee
+
+If you like my work and want to support its development:
+
+[![Buy Me a Coffee](https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=☕&slug=karlblock&button_colour=FFDD00&font_colour=000000&font_family=Arial&outline_colour=000000&coffee_colour=ffffff)](https://www.buymeacoffee.com/karlblock)
+
+---
+
+## 📄 Licence
+
+Distribué sous licence MIT © [Karl Block](https://github.com/Karlblock)
