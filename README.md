@@ -63,8 +63,18 @@ Et suis les étapes dans ton terminal 🤖
 
 ## 📬 Contribuer
 
-PRs bienvenues !
-Pour toute idée d’amélioration ou intégration CI/CD → [ouvre une issue](https://github.com/Karlblock/gopush/issues)
+Les contributions sont les bienvenues ! 🙌
+
+Que vous souhaitiez :
+
+- 🛠️ corriger un bug,
+- ✨ proposer une fonctionnalité,
+- ⚙️ intégrer une CI/CD (GitHub Actions, tests, releases...),
+- 🧪 améliorer l’expérience utilisateur ou l’interactivité,
+
+👉 Créez une **issue** pour en discuter, ou soumettez directement une **pull request**.
+
+Merci de contribuer à faire de `gopush` un outil plus utile pour tous ! 💚
 
 ---
 
