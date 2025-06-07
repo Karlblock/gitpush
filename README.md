@@ -3,7 +3,7 @@
 ![banner](banner-gopush.txt)
 
 
-> Assistant Git interactif en ligne de commande – `commit`, `push`, `tag`, `release`… en une commande.
+> Git interactif  – `commit`, `push`, `tag`, `release`… .
 
 [![Shell](https://img.shields.io/badge/script-shell-blue?style=flat-square&logo=gnu-bash)](https://bash.sh)
 [![Licence MIT](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
