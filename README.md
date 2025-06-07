@@ -1,6 +1,6 @@
 # 🚀 gopush
 
-![gopush demo](assets/demo.gif)
+![banner](banner-gopush.txt)
 
 
 > Assistant Git interactif en ligne de commande – `commit`, `push`, `tag`, `release`… en une commande.
@@ -9,14 +9,6 @@
 [![Licence MIT](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
 [![Made by Cyber Normandie](https://img.shields.io/badge/made%20by-Cyber%20Normandie-blueviolet?style=flat-square)](https://cyber-normandie.fr)
 [![Releases](https://img.shields.io/github/v/release/Karlblock/gopush?style=flat-square)](https://github.com/Karlblock/gopush/releases)
-
----
-
-## 🎥 Démo
-
-![demo](assets/demo.gif)
-
----
 
 ## ✨ Fonctionnalités
 
