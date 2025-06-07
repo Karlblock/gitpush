@@ -1,5 +1,8 @@
 # 🚀 gopush
 
+gopush — Git sans prise de tête.
+Un assistant Git interactif pour gérer commits, branches, tags et releases en toute simplicité, depuis le terminal.
+
 ```                               __  
     ____ _____  ____  __  _______/ /_ 
   / __ `/ __ \/ __ \/ / / / ___/ __ \
