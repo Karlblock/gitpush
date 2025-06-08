@@ -18,6 +18,23 @@
 
 ---
 
+## 🧨 Pourquoi `gitpush` ?
+
+> Arrêtons le danger du classique :  
+> `git add . && git commit -m "" && git push`
+
+Combien de fois on a poussé un commit à l’arrache ?  
+Message vide, ajout de fichiers qu’on n’a pas vérifié, et push direct ? 😵
+
+**`gitpush`** est un outil CLI simple qui :
+- 🚫 T’empêche de pousser sans réfléchir
+- ✍️ Te génère un message de commit (ou t’en propose un)
+- 🧠 Te montre ce que tu vas envoyer avant de valider
+- 🚀 Et pousse ton code en douceur
+
+> 🧠 Objectif : rendre Git agréable, lisible, et moins dangereux.
+
+
 ## 🎥 Démo
 
 ![demo](assets/demo.png)
