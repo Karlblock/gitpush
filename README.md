@@ -1,27 +1,26 @@
 # 🚀 gitpush
 
-gitpush — Git sans prise de tête.
-Un assistant Git interactif pour gérer commits, branches, tags et releases en toute simplicité, depuis le terminal.
-
-``` 
+```
           _ __                   __  
    ____ _(_) /_____  __  _______/ /_ 
   / __ `/ / __/ __ \/ / / / ___/ __ \
  / /_/ / / /_/ /_/ / /_/ (__  ) / / /
  \__, /_/\__/ .___/\__,_/____/_/ /_/ 
-/____/     /_/ 
+/____/     /_/                       
+
+     🚀 gitpush — by Karl Block
 ```
 
 [![Shell](https://img.shields.io/badge/script-shell-blue?style=flat-square&logo=gnu-bash)](https://bash.sh)
 [![Licence MIT](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
 [![Made by Karl Block](https://img.shields.io/badge/made%20by-Karl%20Block-blueviolet?style=flat-square)](https://github.com/Karlblock)
-[![Releases](https://img.shields.io/github/v/release/Karlblock/gopush?style=flat-square)](https://github.com/Karlblock/gopush/releases)
+[![Releases](https://img.shields.io/github/v/release/Karlblock/gitpush?style=flat-square)](https://github.com/Karlblock/gitpush/releases)
 
 ---
 
 ## 🎥 Démo
 
-![demo](assets/demo.gif)
+![demo](assets/demo.png)
 
 ---
 
@@ -91,4 +90,4 @@ If you like my work and want to support its development:
 
 ## 📄 Licence
 
-Distribué sous licence MIT © [KarlBlock](https://github.com/Karlblock)
+Distribué sous licence MIT © [Karl Block](https://github.com/Karlblock)
