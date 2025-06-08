@@ -1,37 +1,107 @@
-# 🚀 gopush
+# 🚀 gitpush — Assistant Git interactif
 
-![gopush demo](assets/demo.gif)
+![version](https://img.shields.io/badge/version-v0.3.2-blue)
+![license](https://img.shields.io/badge/license-MIT-green)
 
-
-> Assistant Git interactif en ligne de commande – `commit`, `push`, `tag`, `release`… en une commande.
-
-[![Shell](https://img.shields.io/badge/script-shell-blue?style=flat-square&logo=gnu-bash)](https://bash.sh)
-[![Licence MIT](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
-[![Made by Cyber Normandie](https://img.shields.io/badge/made%20by-Cyber%20Normandie-blueviolet?style=flat-square)](https://cyber-normandie.fr)
-[![Releases](https://img.shields.io/github/v/release/Karlblock/gopush?style=flat-square)](https://github.com/Karlblock/gopush/releases)
+> Un assistant Git en CLI pour des commits propres, interactifs et sans stress.
 
 ---
 
-## 🎥 Démo
+## 📦 Pourquoi `gitpush` ?
 
-![demo](assets/demo.gif)
+Combien de fois tu as fait :
+
+```bash
+git add . && git commit -m "" && git push
+```
+
+...sans vraiment checker ce que tu faisais ? 😬
+
+➡️ `gitpush` est un outil CLI fun et pratique pour :
+- ✅ Avoir un status clair de la branche
+- 🧠 Éviter les pushs sur `main` par erreur
+- ✍️ Forcer un message de commit utile
+- 🚀 Automatiser le tag, le changelog, la release
 
 ---
 
-## ✨ Fonctionnalités
+## 🛠️ Fonctionnalités
 
-- ✅ Prompt interactif étape par étape
-- 🔄 Option `git pull --rebase`
-- 🏷️ Tag automatique ou personnalisé
-- 📄 Mise à jour auto de `CHANGELOG.md`
-- 🚀 Création de release GitHub (`gh`)
-- 🌐 Ouverture automatique du dépôt GitHub
-- 🛡️ Confirmation en cas de push sur `main`
-- 🧠 Système de branches pro : `dev`, `feat/*`, `fix/*`
+| Fonction                  | Description |
+|--------------------------|-------------|
+| `gitpush`                | Lance l’assistant interactif |
+| `--version`              | Affiche la version actuelle |
+| `--help`                 | Montre l’aide CLI |
+| `--simulate`             | Affiche les actions sans les exécuter |
+| `--yes`                  | Confirme automatiquement toutes les actions |
+| Évite push sur `main`    | Propose de changer/créer une branche |
+| Génère un `CHANGELOG.md`| Inclus automatiquement les commits |
+| Tag automatique          | Basé sur le dernier tag ou perso |
+| GitHub Release (via `gh`)| Crée une release avec tag |
+
+---
+
+## 📸 Aperçu
+
+![Demo GIF](docs/demo.gif)
 
 ---
 
 ## ⚙️ Installation
 
+### 1. Utilisation rapide avec `install.sh`
+
 ```bash
-curl -sSL https://raw.githubusercontent.com/Karlblock/gopush/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/Karlblock/gitpush/main/install.sh | bash
+```
+
+### 2. Avec `make`
+
+```bash
+git clone https://github.com/Karlblock/gitpush.git
+cd gitpush
+make install
+```
+
+---
+
+## 🧪 Simuler sans rien casser
+
+```bash
+gitpush --simulate
+```
+
+Tu verras exactement ce que l’outil ferait, sans modification réelle 🕵️‍♂️
+
+---
+
+## 📋 Exemple complet
+
+```bash
+$ gitpush
+📍 Branche actuelle : dev
+✏️ Message de commit : fix: amélioration script
+🏷️ Créer un tag : oui (auto)
+🚀 Release GitHub : oui
+```
+
+---
+
+## 🔧 Désinstallation
+
+```bash
+make uninstall
+```
+
+---
+
+## ☕ Contribuer
+
+- PR bienvenues !
+- [Buy Me a Coffee](https://www.buymeacoffee.com/karlblock)
+
+---
+
+## 📄 Licence
+
+MIT — Karl Block 2025
