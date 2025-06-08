@@ -3,7 +3,7 @@
 echo "📦 Installation de gitpush..."
 
 mkdir -p ~/.scripts
-curl -sSL https://raw.githubusercontent.com/<ton-user>/gitpush/main/gitpush.sh -o ~/.scripts/gitpush.sh
+curl -sSL https://raw.githubusercontent.com/user1/gitpush/main/gitpush.sh -o ~/.scripts/gitpush.sh
 chmod +x ~/.scripts/gitpush.sh
 
 if ! grep -q "alias gitpush=" ~/.bashrc; then
