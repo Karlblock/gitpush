@@ -1,9 +1,17 @@
-## v3.0.0 - 2025-06-08
-- v3.0.0
-
 # 📦 Changelog – gitpush
 
 Toutes les modifications notables du projet seront documentées ici.
+
+---
+
+## [v3.0.0] - 2025-06-08
+### 🎉 Version majeure
+- ✅ Stabilisation de toutes les fonctionnalités
+- 🔧 Support des flags `--version`, `--help`, `--simulate`, `--yes`
+- 🖥️ Ajout d’un installateur graphique `.desktop`
+- 🧰 `install.sh` intelligent pour bash/zsh
+- 🧪 `make install` / `make uninstall` prêts pour intégration
+- 🧠 Structure du projet prête pour publication publique
 
 ---
 
@@ -28,4 +36,3 @@ Toutes les modifications notables du projet seront documentées ici.
 ## [v0.1] - 2025-06-05
 ### Créé
 - 🛠️ Script initial avec bannière, `git add`, commit et push simples
-
