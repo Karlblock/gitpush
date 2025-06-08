@@ -1,11 +1,34 @@
 #!/bin/bash
 
-VERSION="v0.3.1"
+GITPUSH_VERSION="v3.0.0"
+SIMULATE=false
+AUTO_CONFIRM=false
 
-if [[ "$1" == "--version" || "$1" == "-v" ]]; then
-  echo "gitpush version $VERSION"
-  exit 0
-fi
+# Flags
+for arg in "$@"; do
+  case $arg in
+    --version|-v)
+      echo "gitpush $GITPUSH_VERSION"
+      exit 0
+      ;;
+    --help)
+      echo -e "Usage: gitpush [options]\n"
+      echo "Options:"
+      echo "  --version      Affiche la version"
+      echo "  --help         Affiche cette aide"
+      echo "  --simulate     Affiche les actions sans les exécuter"
+      echo "  --yes          Exécute toutes les actions sans confirmation"
+      exit 0
+      ;;
+    --simulate)
+      SIMULATE=true
+      ;;
+    --yes)
+      AUTO_CONFIRM=true
+      ;;
+  esac
+  shift
+done
 
 clear
 
@@ -15,65 +38,72 @@ cat << "EOF"
   / __ `/ / __/ __ \/ / / / ___/ __ \
  / /_/ / / /_/ /_/ / /_/ (__  ) / / /
  \__, /_/\__/ .___/\__,_/____/_/ /_/ 
-/____/     /_/                       
+/____/     /_/                        
 
         🚀 gitpush — by Karl Block
 EOF
 
-echo -e "\033[1;36m🔧 Gitpush - Assistant Git interactif $VERSION\033[0m"
+echo -e "\033[1;36m🔧 Gitpush - Assistant Git interactif \033[1;35m$GITPUSH_VERSION\033[0m"
 
 # Branche actuelle
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 echo -e "\n📍 Branche actuelle : \033[1;35m$current_branch\033[0m"
 
 if [[ "$current_branch" == "main" || "$current_branch" == "master" ]]; then
-  echo -e "\033[1;31m🛑 Tu es sur une branche critique : $current_branch\033[0m"
-  read -p "❗ Continuer quand même ? (y/N) : " confirm_main
-  if [[ ! "$confirm_main" =~ ^[yY]$ ]]; then
-    echo -e "\033[1;31m✘ Opération annulée.\033[0m"
+  echo -e "\033[1;31m🚩 Tu es sur une branche critique : $current_branch\033[0m"
+  if ! $AUTO_CONFIRM; then
+    read -p "❗ Continuer quand même ? (y/N) : " confirm_main
+    if [[ ! "$confirm_main" =~ ^[yY]$ ]]; then
+      echo -e "\033[1;31m✘ Opération annulée.\033[0m"
+      echo -e "\n🔁 Que veux-tu faire maintenant ?"
+      PS3=$'\n👉 Ton choix : '
+      options=("🔀 Changer de branche existante" "➕ Créer une nouvelle branche" "❌ Quitter")
 
-    echo -e "\n🔁 Que veux-tu faire maintenant ?"
-    PS3=$'\n👉 Ton choix : '
-    options=("🔀 Changer de branche existante" "➕ Créer une nouvelle branche" "❌ Quitter")
-
-    select opt in "${options[@]}"; do
-      case $REPLY in
-        1)
-          echo -e "\n📂 Branches locales :"
-          branches=$(git branch --format="%(refname:short)" | grep -vE "^(main|master)$")
-          select branch in $branches "Retour"; do
-            if [[ "$branch" == "Retour" ]]; then break
-            elif [[ -n "$branch" ]]; then
-              git switch "$branch"
-              current_branch="$branch"
-              echo -e "\033[1;32m✅ Switched to branch: $branch\033[0m"
-              break 2
+      select opt in "${options[@]}"; do
+        case $REPLY in
+          1)
+            echo -e "\n📂 Branches locales :"
+            branches=$(git branch --format="%(refname:short)" | grep -vE "^(main|master)$")
+            select branch in $branches "Retour"; do
+              if [[ "$branch" == "Retour" ]]; then
+                break
+              elif [[ -n "$branch" ]]; then
+                git switch "$branch"
+                current_branch="$branch"
+                echo -e "\033[1;32m✔ Switched to branch: $branch\033[0m"
+                break 2
+              else
+                echo "❌ Choix invalide."
+              fi
+            done
+            ;;
+          2)
+            read -p "🌟 Nom de la nouvelle branche : " new_branch
+            if [[ -n "$new_branch" ]]; then
+              git checkout -b "$new_branch"
+              current_branch="$new_branch"
+              echo -e "\033[1;32m✔ Nouvelle branche créée et sélectionnée : $new_branch\033[0m"
+              break
             else
-              echo "❌ Choix invalide."
+              echo "⚠️ Nom invalide."
             fi
-          done
-          ;;
-        2)
-          read -p "🆕 Nom de la nouvelle branche : " new_branch
-          if [[ -n "$new_branch" ]]; then
-            git checkout -b "$new_branch"
-            current_branch="$new_branch"
-            echo -e "\033[1;32m✅ Nouvelle branche créée et sélectionnée : $new_branch\033[0m"
-            break
-          else
-            echo "⚠️ Nom invalide."
-          fi
-          ;;
-        3)
-          echo -e "\033[1;33m👋 À bientôt !\033[0m"
-          exit 0
-          ;;
-        *)
-          echo "❌ Choix invalide."
-          ;;
-      esac
-    done
+            ;;
+          3)
+            echo -e "\033[1;33m👋 À bientôt !\033[0m"
+            exit 0
+            ;;
+          *)
+            echo "❌ Choix invalide."
+            ;;
+        esac
+      done
+    fi
   fi
+fi
+
+# Simulation (exemple d’utilisation)
+if $SIMULATE; then
+  echo -e "\n🔢 Mode simulation activé : aucune commande ne sera exécutée."
 fi
 
 # Message de commit

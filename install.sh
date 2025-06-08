@@ -1,39 +1,54 @@
 #!/bin/bash
+set -e
 
 echo "📦 Installation de gitpush..."
 
-SCRIPT_DIR="$HOME/.scripts"
-TARGET="$SCRIPT_DIR/gitpush.sh"
-ALIAS='alias gitpush="$HOME/.scripts/gitpush.sh"'
-SHELL_RC="$HOME/.bashrc"
+# Répertoires cibles
+INSTALL_DIR="$HOME/.local/bin"
+DESKTOP_DIR="$HOME/.local/share/applications"
+SCRIPT_NAME="gitpush"
+SCRIPT_PATH="$INSTALL_DIR/$SCRIPT_NAME"
 
-# Detect shell
-if [[ "$SHELL" =~ zsh$ ]]; then
-  SHELL_RC="$HOME/.zshrc"
+# Créer le dossier d'installation
+mkdir -p "$INSTALL_DIR"
+
+# Télécharger le script principal
+curl -fsSL https://raw.githubusercontent.com/Karlblock/gitpush/main/gitpush.sh -o "$SCRIPT_PATH"
+chmod +x "$SCRIPT_PATH"
+
+# Ajouter à $PATH si non présent
+if [[ ":$PATH:" != *":$INSTALL_DIR:"* ]]; then
+  SHELL_CONFIG=""
+  [[ -f "$HOME/.bashrc" ]] && SHELL_CONFIG="$HOME/.bashrc"
+  [[ -f "$HOME/.zshrc" ]] && SHELL_CONFIG="$HOME/.zshrc"
+
+  if [[ -n "$SHELL_CONFIG" ]]; then
+    echo "export PATH=\"$INSTALL_DIR:\$PATH\"" >> "$SHELL_CONFIG"
+    echo "✅ PATH mis à jour dans $SHELL_CONFIG"
+    source "$SHELL_CONFIG"
+  else
+    echo "⚠️ Impossible de trouver un fichier de configuration shell (.bashrc ou .zshrc)"
+  fi
 fi
 
-# Créer le dossier si besoin
-mkdir -p "$SCRIPT_DIR"
+# Création du lanceur graphique
+if command -v xdg-open &> /dev/null; then
+  mkdir -p "$DESKTOP_DIR"
 
-# Télécharger le script
-curl -fsSL https://raw.githubusercontent.com/karlblock/gitpush/main/gitpush.sh -o "$TARGET"
-chmod +x "$TARGET"
+  cat > "$DESKTOP_DIR/gitpush.desktop" <<EOF
+[Desktop Entry]
+Type=Application
+Name=Gitpush
+Exec=$SCRIPT_PATH
+Icon=utilities-terminal
+Terminal=true
+Categories=Development;
+EOF
 
-# Ajouter alias s’il n’existe pas déjà
-if ! grep -Fxq "$ALIAS" "$SHELL_RC"; then
-  echo "$ALIAS" >> "$SHELL_RC"
-  echo "✅ Alias ajouté à $SHELL_RC"
-else
-  echo "ℹ️ Alias déjà présent dans $SHELL_RC"
+  chmod +x "$DESKTOP_DIR/gitpush.desktop"
+  update-desktop-database "$DESKTOP_DIR" &> /dev/null || true
+  echo "🖥️ Lanceur graphique installé (menu Applications > Gitpush)"
 fi
 
-# Export version (optionnel)
-if ! grep -q "export GITPUSH_VERSION=" "$SHELL_RC"; then
-  echo 'export GITPUSH_VERSION="v0.3.1"' >> "$SHELL_RC"
-fi
-
-# Charger immédiatement
-source "$SHELL_RC"
-
-echo "🚀 Gitpush est prêt à l’emploi !"
-echo "ℹ️ Tape 'gitpush' dans ton terminal ✨"
+echo "🚀 Gitpush v3.0.0 est prêt à l’emploi !"
+echo "✨ Tape simplement : \033[1;32mgitpush\033[0m"

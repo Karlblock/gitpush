@@ -1,9 +1,3 @@
-## v0.2.1 - 2025-06-08
-- v0.3.1
-
-## v0.0.1 - 2025-06-08
-- v0.3
-
 # 📦 Changelog – gitpush
 
 Toutes les modifications notables du projet seront documentées ici.
@@ -31,3 +25,4 @@ Toutes les modifications notables du projet seront documentées ici.
 ## [v0.1] - 2025-06-05
 ### Créé
 - 🛠️ Script initial avec bannière, `git add`, commit et push simples
+
