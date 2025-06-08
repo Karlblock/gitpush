@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Gitpush CLI
+Comment=Assistant Git interactif par Karl Block
+Exec=gnome-terminal -- bash -c '~/.scripts/gitpush.sh; exec bash'
+Icon=utilities-terminal
+Terminal=false
+Type=Application
+Categories=Development;
