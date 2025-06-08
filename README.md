@@ -3,13 +3,13 @@
 gopush — Git sans prise de tête.
 Un assistant Git interactif pour gérer commits, branches, tags et releases en toute simplicité, depuis le terminal.
 
-```                               __  
-    ____ _____  ____  __  _______/ /_ 
-  / __ `/ __ \/ __ \/ / / / ___/ __ \
- / /_/ / /_/ / /_/ / /_/ (__  ) / / /
- \__, /\____/ .___/\__,_/____/_/ /_/ 
+``` 
+          _ __                   __  
+   ____ _(_) /_____  __  _______/ /_ 
+  / __ `/ / __/ __ \/ / / / ___/ __ \
+ / /_/ / / /_/ /_/ / /_/ (__  ) / / /
+ \__, /_/\__/ .___/\__,_/____/_/ /_/ 
 /____/     /_/ 
-
 ```
 
 [![Shell](https://img.shields.io/badge/script-shell-blue?style=flat-square&logo=gnu-bash)](https://bash.sh)
