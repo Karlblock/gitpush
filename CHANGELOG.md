@@ -4,7 +4,7 @@ Toutes les modifications notables du projet seront documentées ici.
 
 ---
 
-## [v3.0.0] - 2025-06-08
+## [v0.3.0] - 2025-06-08
 ### 🎉 Version majeure
 - ✅ Stabilisation de toutes les fonctionnalités
 - 🔧 Support des flags `--version`, `--help`, `--simulate`, `--yes`
@@ -13,15 +13,6 @@ Toutes les modifications notables du projet seront documentées ici.
 - 🧪 `make install` / `make uninstall` prêts pour intégration
 - 🧠 Structure du projet prête pour publication publique
 
----
-
-## [v0.3] - 2025-06-08
-### Ajouté
-- 🔀 Menu interactif après refus de push sur `main` (switch ou création de branche)
-- ✍️ Résumé visuel clair en fin de session
-- 🖼️ Ajout de support pour bannière ASCII et image d’aperçu
-- 🏷️ Génération auto de tag (`vX.Y.Z`) + commit du `CHANGELOG.md`
-- 🚀 Création de release GitHub via `gh`
 
 ---
 

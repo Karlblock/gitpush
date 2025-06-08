@@ -1,6 +1,6 @@
 #!/bin/bash
 
-GITPUSH_VERSION="v3.0.0"
+GITPUSH_VERSION="v0.3.0"
 SIMULATE=false
 AUTO_CONFIRM=false
 
