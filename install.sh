@@ -3,10 +3,10 @@
 echo "📦 Installation de gitpush..."
 
 mkdir -p ~/.scripts
-curl -sSL https://raw.githubusercontent.com/<ton-user>/gopush/main/gitpush.sh -o ~/.scripts/gitpush.sh
+curl -sSL https://raw.githubusercontent.com/<ton-user>/gitpush/main/gitpush.sh -o ~/.scripts/gitpush.sh
 chmod +x ~/.scripts/gitpush.sh
 
-if ! grep -q "alias gopush=" ~/.bashrc; then
+if ! grep -q "alias gitpush=" ~/.bashrc; then
   echo 'alias gitpush="~/.scripts/gitpush.sh"' >> ~/.bashrc
   echo "✅ Alias ajouté à ~/.bashrc"
 fi
