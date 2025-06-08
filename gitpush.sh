@@ -1,7 +1,20 @@
 #!/bin/bash
 
 clear
+
+cat << "EOF"
+          _ __                   __  
+   ____ _(_) /_____  __  _______/ /_ 
+  / __ `/ / __/ __ \/ / / / ___/ __ \
+ / /_/ / / /_/ /_/ / /_/ (__  ) / / /
+ \__, /_/\__/ .___/\__,_/____/_/ /_/ 
+/____/     /_/                       
+
+        🚀 gitpush — by Karl Block
+EOF
+
 echo -e "\033[1;36m🔧 Gitpush - Assistant Git interactif\033[0m"
+
 
 # Branche actuelle
 current_branch=$(git rev-parse --abbrev-ref HEAD)
