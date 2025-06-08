@@ -54,10 +54,12 @@ Message vide, ajout de fichiers qu’on n’a pas vérifié, et push direct ? �
 
 ---
 
-## ⚙️ Installation
+## 🛠️ Installation
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/Karlblock/gitpush/main/install.sh | bash
+curl -o gitpush https://raw.githubusercontent.com/Karlblock/gitpush/main/gitpush.sh
+chmod +x gitpush
+sudo mv gitpush /usr/local/bin/gitpush
 ```
 
 ---
