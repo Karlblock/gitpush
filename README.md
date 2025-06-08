@@ -41,7 +41,7 @@ Un assistant Git interactif pour gérer commits, branches, tags et releases en t
 ## ⚙️ Installation
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/Karlblock/gopush/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/Karlblock/gitpush/main/install.sh | bash
 ```
 
 ---
@@ -77,7 +77,7 @@ Que vous souhaitiez :
 
 👉 Créez une **issue** pour en discuter, ou soumettez directement une **pull request**.
 
-Merci de contribuer à faire de `gopush` un outil plus utile pour tous ! 💚
+Merci de contribuer à faire de `gitpush` un outil plus utile pour tous ! 💚
 
 ---
 
