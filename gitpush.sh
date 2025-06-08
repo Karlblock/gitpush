@@ -1,5 +1,12 @@
 #!/bin/bash
 
+VERSION="v0.3.1"
+
+if [[ "$1" == "--version" || "$1" == "-v" ]]; then
+  echo "gitpush version $VERSION"
+  exit 0
+fi
+
 clear
 
 cat << "EOF"
@@ -13,7 +20,7 @@ cat << "EOF"
         🚀 gitpush — by Karl Block
 EOF
 
-echo -e "\033[1;36m🔧 Gitpush - Assistant Git interactif\033[0m"
+echo -e "\033[1;36m🔧 Gitpush - Assistant Git interactif $VERSION\033[0m"
 
 # Branche actuelle
 current_branch=$(git rev-parse --abbrev-ref HEAD)
@@ -25,7 +32,6 @@ if [[ "$current_branch" == "main" || "$current_branch" == "master" ]]; then
   if [[ ! "$confirm_main" =~ ^[yY]$ ]]; then
     echo -e "\033[1;31m✘ Opération annulée.\033[0m"
 
-    # Nouveau menu interactif
     echo -e "\n🔁 Que veux-tu faire maintenant ?"
     PS3=$'\n👉 Ton choix : '
     options=("🔀 Changer de branche existante" "➕ Créer une nouvelle branche" "❌ Quitter")
@@ -36,8 +42,7 @@ if [[ "$current_branch" == "main" || "$current_branch" == "master" ]]; then
           echo -e "\n📂 Branches locales :"
           branches=$(git branch --format="%(refname:short)" | grep -vE "^(main|master)$")
           select branch in $branches "Retour"; do
-            if [[ "$branch" == "Retour" ]]; then
-              break
+            if [[ "$branch" == "Retour" ]]; then break
             elif [[ -n "$branch" ]]; then
               git switch "$branch"
               current_branch="$branch"
@@ -75,16 +80,11 @@ fi
 read -p "✏️ Message de commit : " msg
 [ -z "$msg" ] && { echo -e "\033[1;31m✘ Message requis.\033[0m"; exit 1; }
 
-# Pull --rebase
 read -p "🔄 Faire un pull --rebase avant ? (y/N) : " do_sync
-
-# Tag
 read -p "🏷️  Créer un tag ? (y/N) : " do_tag
 if [[ "$do_tag" =~ ^[yY]$ ]]; then
   read -p "➕ Utiliser un tag personnalisé (ex: v1.2.0) ou laisser en auto ? [auto|vX.Y.Z] : " custom_tag
 fi
-
-# Release GitHub
 read -p "🚀 Créer une GitHub Release ? (y/N) : " do_release
 
 echo -e "\n📦 Résumé de l'action :"
@@ -96,20 +96,18 @@ echo -e "• 📝 Commit : \033[1;32m$msg\033[0m"
 read -p $'\n✅ Confirmer et lancer ? (y/N) : ' confirm_run
 [[ "$confirm_run" =~ ^[yY]$ ]] || { echo -e "\033[1;31m✘ Annulé.\033[0m"; exit 1; }
 
-# Git actions
 git add .
 git commit -m "$msg"
-
 [[ "$do_sync" =~ ^[yY]$ ]] && git pull --rebase
 git push
 
-# Tagging
+# Tagging sécurisé
 if [[ "$do_tag" =~ ^[yY]$ ]]; then
-  if [[ "$custom_tag" =~ ^v[0-9]+\\.[0-9]+\\.[0-9]+$ ]]; then
+  if [[ "$custom_tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
     new_tag="$custom_tag"
   else
     last_tag=$(git tag --sort=-v:refname | head -n 1)
-    if [[ $last_tag =~ ^v([0-9]+)\\.([0-9]+)\\.([0-9]+)$ ]]; then
+    if [[ $last_tag =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
       major=${BASH_REMATCH[1]}
       minor=${BASH_REMATCH[2]}
       patch=$((BASH_REMATCH[3] + 1))
@@ -118,20 +116,30 @@ if [[ "$do_tag" =~ ^[yY]$ ]]; then
       new_tag="v0.0.1"
     fi
   fi
-  git tag "$new_tag"
-  git push origin "$new_tag"
 
-  # Mise à jour CHANGELOG
-  echo -e "## $new_tag - $(date +%F)\n- $msg\n" | cat - CHANGELOG.md 2>/dev/null > temp && mv temp CHANGELOG.md
-  git add CHANGELOG.md
-  git commit -m "docs: update CHANGELOG for $new_tag"
-  git push
+  if git tag | grep -q "^$new_tag$"; then
+    echo -e "\033[1;31m⚠️ Le tag $new_tag existe déjà. Aucun tag ajouté.\033[0m"
+  else
+    git tag "$new_tag"
+    git push origin "$new_tag"
+    echo -e "\033[1;32m✅ Tag $new_tag ajouté et poussé.\033[0m"
+
+    # Mise à jour CHANGELOG
+    echo -e "## $new_tag - $(date +%F)\n- $msg\n" | cat - CHANGELOG.md 2>/dev/null > temp && mv temp CHANGELOG.md
+    git add CHANGELOG.md
+    git commit -m "docs: update CHANGELOG for $new_tag"
+    git push
+  fi
 fi
 
 # GitHub Release
 if [[ "$do_release" =~ ^[yY]$ ]]; then
   if command -v gh &> /dev/null; then
-    gh release create "$new_tag" --title "$new_tag" --notes-from=diff
+    if [[ -n "$new_tag" ]] && git tag | grep -q "^$new_tag$"; then
+      gh release create "$new_tag" --title "$new_tag" --generate-notes
+    else
+      echo -e "\033[1;33m⚠️ Aucune release créée car le tag est manquant ou existait déjà.\033[0m"
+    fi
   else
     echo -e "\033[1;31m⚠️ GitHub CLI non installé, release ignorée.\033[0m"
   fi
