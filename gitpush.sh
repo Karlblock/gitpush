@@ -16,15 +16,49 @@ EOF
 echo -e "\033[1;36m🔧 Gitpush - Assistant Git interactif\033[0m"
 
 
-# Branche actuelle
-current_branch=$(git rev-parse --abbrev-ref HEAD)
-echo -e "\n📍 Branche actuelle : \033[1;35m$current_branch\033[0m"
-
 if [[ "$current_branch" == "main" || "$current_branch" == "master" ]]; then
   echo -e "\033[1;31m🛑 Tu es sur une branche critique : $current_branch\033[0m"
   read -p "❗ Continuer quand même ? (y/N) : " confirm_main
-  [[ "$confirm_main" =~ ^[yY]$ ]] || { echo -e "\033[1;31m✘ Opération annulée.\033[0m"; exit 1; }
+  if [[ ! "$confirm_main" =~ ^[yY]$ ]]; then
+    echo -e "\n\033[1;36m🔀 Voici les branches locales disponibles :\033[0m"
+
+    # Liste des branches (hors main/master)
+    branches=$(git branch --format="%(refname:short)" | grep -vE "^(main|master)$")
+
+    options=($branches "➕ Créer une nouvelle branche" "❌ Annuler")
+
+    select branch in "${options[@]}"; do
+      case "$branch" in
+        "❌ Annuler")
+          echo -e "\033[1;31m✘ Opération annulée.\033[0m"
+          exit 1
+          ;;
+        "➕ Créer une nouvelle branche")
+          read -p "🆕 Nom de la nouvelle branche : " new_branch
+          if [[ -n "$new_branch" ]]; then
+            git checkout -b "$new_branch"
+            current_branch="$new_branch"
+            echo -e "\033[1;32m✅ Nouvelle branche créée et sélectionnée : $new_branch\033[0m"
+            break
+          else
+            echo "⚠️ Nom invalide."
+          fi
+          ;;
+        *)
+          if [[ -n "$branch" ]]; then
+            git switch "$branch"
+            current_branch="$branch"
+            echo -e "\033[1;32m✅ Switched to branch: $branch\033[0m"
+            break
+          else
+            echo "❌ Choix invalide."
+          fi
+          ;;
+      esac
+    done
+  fi
 fi
+
 
 # Message de commit
 read -p "✏️ Message de commit : " msg
