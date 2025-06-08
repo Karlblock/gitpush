@@ -1,6 +1,6 @@
-# 🚀 gopush
+# 🚀 gitpush
 
-gopush — Git sans prise de tête.
+gitpush — Git sans prise de tête.
 Un assistant Git interactif pour gérer commits, branches, tags et releases en toute simplicité, depuis le terminal.
 
 ``` 
@@ -49,7 +49,7 @@ curl -sSL https://raw.githubusercontent.com/Karlblock/gopush/main/install.sh | b
 ## 🚀 Utilisation
 
 ```bash
-gopush
+gitpush
 ```
 
 Et suis les étapes dans ton terminal 🤖

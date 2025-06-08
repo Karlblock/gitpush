@@ -1,7 +1,7 @@
 #!/bin/bash
 
 clear
-echo -e "\033[1;36m🔧 Gopush - Assistant Git interactif\033[0m"
+echo -e "\033[1;36m🔧 Gitpush - Assistant Git interactif\033[0m"
 
 # Branche actuelle
 current_branch=$(git rev-parse --abbrev-ref HEAD)
