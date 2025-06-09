@@ -1,10 +1,10 @@
 #!/bin/bash
 
-GITPUSH_VERSION="v3.0.0"
+GITPUSH_VERSION="v0.3.1-dev"
 SIMULATE=false
 AUTO_CONFIRM=false
 
-# Flags
+# ─── Lecture des flags ─────────────────────────────────────────────────────
 for arg in "$@"; do
   case $arg in
     --version|-v)
@@ -32,12 +32,13 @@ done
 
 clear
 
+# ─── Affichage bannière ─────────────────────────────────────────────────────
 cat << "EOF"
           _ __                   __  
    ____ _(_) /_____  __  _______/ /_ 
   / __ `/ / __/ __ \/ / / / ___/ __ \
- / /_/ / / /_/ /_/ / /_/ (__  ) / / /
- \__, /_/\__/ .___/\__,_/____/_/ /_/ 
+ / /_/ / / /_/ /_/ / /_/ (__  ) / / / 
+ \__, /_/\__/ .___/\__,_/____/_/ /_/  
 /____/     /_/                        
 
         🚀 gitpush — by Karl Block
@@ -45,10 +46,14 @@ EOF
 
 echo -e "\033[1;36m🔧 Gitpush - Assistant Git interactif \033[1;35m$GITPUSH_VERSION\033[0m"
 
-# Branche actuelle
+# ─── Contexte Git : branche & dépôt ────────────────────────────────────────
 current_branch=$(git rev-parse --abbrev-ref HEAD)
-echo -e "\n📍 Branche actuelle : \033[1;35m$current_branch\033[0m"
+repo_name=$(basename -s .git "$(git config --get remote.origin.url 2>/dev/null)")
 
+echo -e "\n📍 Branche actuelle : \033[1;35m$current_branch\033[0m"
+echo -e "📦 Dépôt : \033[1;36m${repo_name:-Dépôt inconnu}\033[0m"
+
+# ─── Alerte si branche critique ────────────────────────────────────────────
 if [[ "$current_branch" == "main" || "$current_branch" == "master" ]]; then
   echo -e "\033[1;31m🚩 Tu es sur une branche critique : $current_branch\033[0m"
   if ! $AUTO_CONFIRM; then
@@ -101,7 +106,7 @@ if [[ "$current_branch" == "main" || "$current_branch" == "master" ]]; then
   fi
 fi
 
-# Simulation (exemple d’utilisation)
+# ─── Mode simulation ? ──────────────────────────────────────────────────────
 if $SIMULATE; then
   echo -e "\n🔢 Mode simulation activé : aucune commande ne sera exécutée."
 fi
