@@ -1,7 +1,3 @@
-## v0.3.4 - 2025-06-09
-- test
-
-
 # 📦 Changelog – gitpush
 
 Toutes les modifications notables du projet seront documentées ici.
