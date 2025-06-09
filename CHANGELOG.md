@@ -1,3 +1,6 @@
+## v0.3.1 - 2025-06-09
+- fix : depot v0.3.1
+
 
 # 📦 Changelog – gitpush
 
