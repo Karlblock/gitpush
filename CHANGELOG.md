@@ -1,4 +1,7 @@
 ## v0.3.2 - 2025-06-09
+- v0.3.1-dev
+
+## v0.3.2 - 2025-06-09
 - voir le dépot
 
 # 📦 Changelog – gitpush
