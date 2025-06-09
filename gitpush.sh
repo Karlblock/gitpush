@@ -138,7 +138,7 @@ git push
 
 # Tagging sécurisé
 if [[ "$do_tag" =~ ^[yY]$ ]]; then
-  if [[ "$custom_tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+  if [[ "$custom_tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+)?$ ]]; then
     new_tag="$custom_tag"
   else
     last_tag=$(git tag --sort=-v:refname | head -n 1)
@@ -152,6 +152,7 @@ if [[ "$do_tag" =~ ^[yY]$ ]]; then
     fi
   fi
 
+  # Vérifie si le tag existe déjà
   if git tag | grep -q "^$new_tag$"; then
     echo -e "\033[1;31m⚠️ Le tag $new_tag existe déjà. Aucun tag ajouté.\033[0m"
   else
@@ -159,7 +160,7 @@ if [[ "$do_tag" =~ ^[yY]$ ]]; then
     git push origin "$new_tag"
     echo -e "\033[1;32m✅ Tag $new_tag ajouté et poussé.\033[0m"
 
-    # Mise à jour CHANGELOG
+    # Mise à jour du CHANGELOG
     echo -e "## $new_tag - $(date +%F)\n- $msg\n" | cat - CHANGELOG.md 2>/dev/null > temp && mv temp CHANGELOG.md
     git add CHANGELOG.md
     git commit -m "docs: update CHANGELOG for $new_tag"
