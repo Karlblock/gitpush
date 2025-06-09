@@ -1,5 +1,3 @@
-## v0.3.2 - 2025-06-09
-- add test
 
 # 📦 Changelog – gitpush
 
