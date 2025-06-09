@@ -1,6 +1,6 @@
 #!/bin/bash
 
-GITPUSH_VERSION="v0.3.1-dev"
+GITPUSH_VERSION="v0.3.1"
 
 SIMULATE=false
 AUTO_CONFIRM=false
@@ -180,7 +180,7 @@ fi
 if [[ "$do_release" =~ ^[yY]$ ]]; then
   if command -v gh &> /dev/null; then
     if [[ -n "$new_tag" ]] && git tag | grep -q "^$new_tag$"; then
-      gh release create "$new_tag" --title "$new_tag" --generate-notes
+      gh release create "$new_tag" --title "$new_tag" --notes-from-tag --latest
     else
       echo -e "\033[1;33m⚠️ Aucune release créée car le tag est manquant ou existait déjà.\033[0m"
     fi
