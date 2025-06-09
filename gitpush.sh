@@ -161,7 +161,14 @@ if [[ "$do_tag" =~ ^[yY]$ ]]; then
     echo -e "\033[1;32m✅ Tag $new_tag ajouté et poussé.\033[0m"
 
     # Mise à jour du CHANGELOG
-    echo -e "## $new_tag - $(date +%F)\n- $msg\n" | cat - CHANGELOG.md 2>/dev/null > temp && mv temp CHANGELOG.md
+    if ! grep -q "^## $new_tag" CHANGELOG.md 2>/dev/null; then
+      echo -e "## $new_tag - $(date +%F)\n- $msg\n" | cat - CHANGELOG.md 2>/dev/null > temp && mv temp CHANGELOG.md
+      git add CHANGELOG.md
+      git commit -m "docs: update CHANGELOG for $new_tag"
+      git push
+    else
+      echo -e "\033[1;33mℹ️ Le changelog contient déjà une entrée pour $new_tag. Ignoré.\033[0m"
+    fi
     git add CHANGELOG.md
     git commit -m "docs: update CHANGELOG for $new_tag"
     git push
