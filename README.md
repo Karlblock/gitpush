@@ -89,7 +89,7 @@ $ gitpush
 🏷️ Tag : auto (vX.Y.Z)
 🚀 GitHub Release : oui
 🎯 Accéder au menu Issues ? (y/N) : n
-✅ Résumé → lancement !
+✅ Résumé → lancement ! :
 ```
 
 ---
