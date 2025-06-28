@@ -81,14 +81,40 @@ run_command() {
 
   if $SIMULATE; then
     echo -e "${CYAN}Simulate:${NC} ${cmd_args[*]}"
-  else
-    echo -e "${CYAN}Executing:${NC} ${cmd_args[*]}"
-    "${cmd_args[@]}"
-    if [ $? -ne 0 ]; then
-      echo -e "${RED}Error:${NC} $error_msg"
+    return 0
+  fi
+  
+  echo -e "${CYAN}Executing:${NC} ${cmd_args[*]}"
+  
+  # Capture both stdout and stderr
+  local output
+  local exit_code
+  
+  output=$("${cmd_args[@]}" 2>&1)
+  exit_code=$?
+  
+  if [ $exit_code -ne 0 ]; then
+    echo -e "${RED}Error:${NC} $error_msg"
+    echo -e "${YELLOW}Command:${NC} ${cmd_args[*]}"
+    echo -e "${YELLOW}Output:${NC} $output"
+    echo -e "${YELLOW}Exit code:${NC} $exit_code"
+    
+    # Ask user if they want to continue or abort
+    if ! $AUTO_CONFIRM; then
+      read -p "Continue anyway? (y/N): " continue_on_error
+      if [[ ! "$continue_on_error" =~ ^[yY]$ ]]; then
+        echo -e "${RED}Operation aborted${NC}"
+        exit 1
+      fi
+    else
       exit 1
     fi
+  else
+    # Show output on success too (for transparency)
+    [[ -n "$output" ]] && echo "$output"
   fi
+  
+  return $exit_code
 }
 
 # --- Display banner ---
@@ -525,13 +551,19 @@ handle_critical_branch() {
         select opt in "${options[@]}"; do
           case $REPLY in
             1)
-              echo -e "\n📂 Branches locales :"
-              branches=$(git branch --format="%(refname:short)" | grep -vE "^(main|master)$")
-              select branch in $branches "Retour"; do
-                if [[ "$branch" == "Retour" ]]; then
+              echo -e "\nLocal branches:"
+              # Fix: Properly handle branch names with spaces
+              local branches_array=()
+              while IFS= read -r branch; do
+                [[ -n "$branch" ]] && branches_array+=("$branch")
+              done < <(git branch --format="%(refname:short)" | grep -vE "^(main|master)$")
+              
+              PS3="Select branch: "
+              select branch in "${branches_array[@]}" "Back"; do
+                if [[ "$branch" == "Back" ]]; then
                   break
                 elif [[ -n "$branch" ]]; then
-                  run_command git switch "$branch" "Impossible de changer de branche."
+                  run_command git switch "$branch" "Failed to switch branch"
                   current_branch="$branch"
                   echo -e "${GREEN}✔ Switched to branch: $branch${NC}"
                   break 2
@@ -570,27 +602,42 @@ get_user_inputs() {
   if [ -z "$MSG" ]; then
     # Check if AI commit is requested
     if [[ "${USE_AI_COMMIT:-false}" == "true" ]] && $AI_AVAILABLE; then
-      echo -e "${CYAN}🤖 Génération du message avec AI...${NC}"
+      echo -e "${CYAN}Generating commit message with AI...${NC}"
       local diff=$(git diff --cached)
       [[ -z "$diff" ]] && diff=$(git diff)
       
       if [[ -n "$diff" ]]; then
         local ai_msg=$(generate_commit_message "$diff" 2>/dev/null | tail -n1)
         if [[ -n "$ai_msg" && "$ai_msg" != "false" ]]; then
-          echo -e "${GREEN}📝 Suggestion AI : ${NC}$ai_msg"
-          read -p "✏️ Utiliser ce message ou modifier [Enter pour accepter] : " user_msg
+          echo -e "${GREEN}AI suggestion: ${NC}$ai_msg"
+          read -p "Use this message or modify [Enter to accept]: " user_msg
           MSG="${user_msg:-$ai_msg}"
         else
-          read -p "✏️ Message de commit : " MSG
+          echo -e "${YELLOW}AI failed to generate message. Manual mode.${NC}"
+          read -p "Commit message: " MSG
         fi
       else
-        echo -e "${YELLOW}⚠️ Aucun changement pour l'AI. Mode manuel.${NC}"
-        read -p "✏️ Message de commit : " MSG
+        echo -e "${YELLOW}No changes for AI to analyze. Manual mode.${NC}"
+        read -p "Commit message: " MSG
       fi
     else
-      read -p "✏️ Message de commit : " MSG
+      read -p "Commit message: " MSG
     fi
-    [ -z "$MSG" ] && { echo -e "${RED}Error: Commit message required${NC}"; exit 1; }
+    
+    # Validate commit message
+    while [[ -z "$MSG" || ${#MSG} -lt 3 ]]; do
+      echo -e "${RED}Error: Commit message must be at least 3 characters${NC}"
+      read -p "Commit message: " MSG
+    done
+    
+    # Check for common mistakes
+    if [[ "$MSG" =~ ^(fix|fixed|update|updated|change|changed)$ ]]; then
+      echo -e "${YELLOW}Warning: Very generic commit message. Consider being more specific.${NC}"
+      read -p "Continue with this message? (y/N): " confirm_generic
+      if [[ ! "$confirm_generic" =~ ^[yY]$ ]]; then
+        read -p "New commit message: " MSG
+      fi
+    fi
   fi
   
   # Auto-detect and handle issue keywords

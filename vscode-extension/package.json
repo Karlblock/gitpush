@@ -1,0 +1,100 @@
+{
+  "name": "gitpush",
+  "displayName": "Gitpush - AI-Powered Git Workflow",
+  "description": "Smart Git automation with AI-powered commits, issue management, and team collaboration",
+  "version": "0.1.0",
+  "publisher": "karlblock",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other",
+    "SCM Providers"
+  ],
+  "keywords": [
+    "git",
+    "github",
+    "ai",
+    "commit",
+    "workflow"
+  ],
+  "activationEvents": [
+    "onCommand:gitpush.smartCommit",
+    "onCommand:gitpush.createIssue",
+    "onCommand:gitpush.showStats",
+    "onCommand:gitpush.aiReview"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "gitpush.smartCommit",
+        "title": "Gitpush: Smart Commit (AI)",
+        "icon": "$(git-commit)"
+      },
+      {
+        "command": "gitpush.createIssue",
+        "title": "Gitpush: Create Issue",
+        "icon": "$(issues)"
+      },
+      {
+        "command": "gitpush.showStats",
+        "title": "Gitpush: Show Stats",
+        "icon": "$(graph)"
+      },
+      {
+        "command": "gitpush.aiReview",
+        "title": "Gitpush: AI Code Review",
+        "icon": "$(sparkle)"
+      }
+    ],
+    "configuration": {
+      "title": "Gitpush",
+      "properties": {
+        "gitpush.aiProvider": {
+          "type": "string",
+          "default": "openai",
+          "enum": ["openai", "anthropic", "google", "local"],
+          "description": "AI provider for smart features"
+        },
+        "gitpush.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "API key for AI provider (stored securely)"
+        },
+        "gitpush.autoSuggestCommitMessage": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically suggest commit messages"
+        }
+      }
+    },
+    "keybindings": [
+      {
+        "command": "gitpush.smartCommit",
+        "key": "ctrl+shift+g c",
+        "mac": "cmd+shift+g c"
+      }
+    ],
+    "statusBarItems": [
+      {
+        "id": "gitpush.status",
+        "alignment": "left",
+        "priority": 100
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "^16.x",
+    "typescript": "^4.9.0"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  }
+}

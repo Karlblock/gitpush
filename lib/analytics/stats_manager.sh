@@ -45,29 +45,98 @@ EOF
 # Record a commit
 record_commit() {
   init_stats
+  
+  # Use file locking to prevent corruption from concurrent access
+  local lockfile="$STATS_FILE.lock"
+  local timeout=10
+  local elapsed=0
+  
+  # Wait for lock with timeout
+  while [[ -f "$lockfile" ]] && [[ $elapsed -lt $timeout ]]; do
+    sleep 0.1
+    ((elapsed++))
+  done
+  
+  # Create lock
+  echo $$ > "$lockfile"
+  
+  # Ensure cleanup on exit
+  trap 'rm -f "$lockfile"' EXIT INT TERM
+  
   local date=$(date +%Y-%m-%d)
   local hour=$(date +%H)
   
+  # Validate JSON before processing
+  if ! jq empty "$STATS_FILE" 2>/dev/null; then
+    echo -e "${YELLOW}Warning: Stats file corrupted, reinitializing...${NC}" >&2
+    rm -f "$STATS_FILE"
+    init_stats
+  fi
+  
   # Update total commits
-  local total=$(jq -r '.total_commits' "$STATS_FILE")
+  local total=$(jq -r '.total_commits' "$STATS_FILE" 2>/dev/null || echo "0")
   ((total++))
   
-  # Update daily stats
-  # TODO: this jq command is getting complex, maybe switch to sqlite?
+  # Update daily stats with atomic operation
+  local temp_file="$STATS_FILE.tmp.$$"
   jq --arg date "$date" --arg hour "$hour" --arg total "$total" '
     .total_commits = ($total | tonumber) |
     .daily_stats[$date].commits = ((.daily_stats[$date].commits // 0) + 1) |
     .daily_stats[$date].hours[$hour] = ((.daily_stats[$date].hours[$hour] // 0) + 1) |
     .last_activity = now
-  ' "$STATS_FILE" > "$STATS_FILE.tmp" && mv "$STATS_FILE.tmp" "$STATS_FILE"
+  ' "$STATS_FILE" > "$temp_file" 2>/dev/null
+  
+  # Validate output before replacing
+  if jq empty "$temp_file" 2>/dev/null; then
+    mv "$temp_file" "$STATS_FILE"
+  else
+    echo -e "${RED}Error: Failed to update stats${NC}" >&2
+    rm -f "$temp_file"
+  fi
+  
+  # Remove lock
+  rm -f "$lockfile"
+  trap - EXIT INT TERM
 }
 
 # Record AI usage
 record_ai_usage() {
   init_stats
-  local count=$(jq -r '.ai_commits' "$STATS_FILE")
+  
+  # Use same locking mechanism as record_commit
+  local lockfile="$STATS_FILE.lock"
+  local timeout=10
+  local elapsed=0
+  
+  while [[ -f "$lockfile" ]] && [[ $elapsed -lt $timeout ]]; do
+    sleep 0.1
+    ((elapsed++))
+  done
+  
+  echo $$ > "$lockfile"
+  trap 'rm -f "$lockfile"' EXIT INT TERM
+  
+  # Validate JSON
+  if ! jq empty "$STATS_FILE" 2>/dev/null; then
+    rm -f "$lockfile"
+    trap - EXIT INT TERM
+    return 1
+  fi
+  
+  local count=$(jq -r '.ai_commits' "$STATS_FILE" 2>/dev/null || echo "0")
   ((count++))
-  jq --arg count "$count" '.ai_commits = ($count | tonumber)' "$STATS_FILE" > "$STATS_FILE.tmp" && mv "$STATS_FILE.tmp" "$STATS_FILE"
+  
+  local temp_file="$STATS_FILE.tmp.$$"
+  jq --arg count "$count" '.ai_commits = ($count | tonumber)' "$STATS_FILE" > "$temp_file" 2>/dev/null
+  
+  if jq empty "$temp_file" 2>/dev/null; then
+    mv "$temp_file" "$STATS_FILE"
+  else
+    rm -f "$temp_file"
+  fi
+  
+  rm -f "$lockfile"
+  trap - EXIT INT TERM
 }
 
 # Display personal stats
