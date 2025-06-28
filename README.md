@@ -49,11 +49,48 @@
 | `--version`              | Affiche la version |
 | `--help`                 | Affiche l’aide |
 | `--simulate`             | Mode simulation sans action |
+| `--issues`               | **NOUVEAU** Gestion complète des issues GitHub |
 | `--yes`                  | Confirmation automatique |
 | Protection branche       | Empêche le push direct sur `main`, propose de switch |
 | Tag auto                 | Génère un tag s’il n’est pas fourni |
 | CHANGELOG automatique    | Mise à jour + commit |
 | GitHub release (`gh`)    | Crée une release avec notes |
+| **Issues GitHub** 🆕     | Création, fermeture et gestion des issues |
+| **Labels auto** 🆕       | Gestion des labels avec suggestions intelligentes |
+| **Détection auto** 🆕    | Fermeture automatique d'issues via commits |
+| **Menu interactif** 🆕   | Navigation facile entre Git et Issues |
+
+---
+
+## 🆕 Nouveautés v0.4.0 - Gestion des Issues GitHub
+
+### 🎯 Menu Issues intégré
+```bash
+gitpush --issues
+# ou utilise le menu principal interactif
+```
+
+### ⚡ Fonctionnalités issues
+- **📋 Lister les issues** ouvertes avec labels
+- **➕ Créer des issues** avec sélection de labels intelligente
+- **🔒 Fermer des issues** avec commentaires
+- **🏷️ Gestion complète des labels** (création, suppression)
+- **🤖 Détection automatique** : commits avec `fixes #123` ferment l'issue
+- **💡 Suggestions intelligentes** : détection de bugs/features dans les commits
+
+### 🔧 Workflow intelligent
+```bash
+$ gitpush
+📍 Branche actuelle : feature/new-login
+✏️ Message de commit : fix: resolve login bug #42
+🔗 Détection automatique : ce commit pourrait fermer l'issue #42
+❓ Confirmer la fermeture de l'issue #42 ? (y/N) : y
+🔄 Pull --rebase : oui
+🏷️ Tag : auto (vX.Y.Z)
+🚀 GitHub Release : oui
+🎯 Accéder au menu Issues ? (y/N) : n
+✅ Résumé → lancement !
+```
 
 ---
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-GITPUSH_VERSION="v0.3.1-dev"
+GITPUSH_VERSION="v0.4.0-dev"
 SIMULATE=false
 AUTO_CONFIRM=false
 MSG=""
@@ -9,6 +9,11 @@ DO_TAG="N"
 CUSTOM_TAG=""
 DO_RELEASE="N"
 NEW_TAG="" # To store the generated or custom tag
+DO_ISSUES="N"
+ISSUE_TITLE=""
+ISSUE_BODY=""
+ISSUE_LABELS=""
+CLOSE_ISSUE=""
 
 # --- Colors and styles ---
 RED="\033[1;31m"
@@ -17,7 +22,11 @@ YELLOW="\033[1;33m"
 BLUE="\033[1;34m"
 MAGENTA="\033[1;35m"
 CYAN="\033[1;36m"
+WHITE="\033[1;37m"
 NC="\033[0m" # No Color
+
+# --- Default labels for issues ---
+DEFAULT_LABELS=("bug" "enhancement" "feature" "documentation" "question" "help wanted" "good first issue")
 
 # --- Helper function to run commands with simulation and error handling ---
 run_command() {
@@ -68,6 +77,7 @@ parse_args() {
         echo "  --simulate     Affiche les actions sans les exécuter"
         echo "  --yes          Exécute toutes les actions sans confirmation"
         echo "  --message|-m   Message de commit (pour mode non-interactif)"
+        echo "  --issues       Gestion des issues GitHub"
         shift
         exit 0
         ;;
@@ -88,6 +98,10 @@ parse_args() {
           exit 1
         fi
         ;;
+      --issues)
+        issues_management
+        exit 0
+        ;;
       *)
         # Unknown argument, ignore for now or add error handling
         shift
@@ -107,6 +121,274 @@ get_git_context() {
 
   echo -e "\n📍 Branche actuelle : ${MAGENTA}$current_branch${NC}"
   echo -e "📦 Dépôt : ${CYAN}${repo_name:-Dépôt inconnu}${NC}"
+}
+
+# --- Check if GitHub CLI is available ---
+check_gh_cli() {
+  if ! command -v gh &> /dev/null; then
+    echo -e "${RED}⚠️ GitHub CLI (gh) n'est pas installé.${NC}"
+    echo -e "${YELLOW}📥 Installation : https://cli.github.com/${NC}"
+    return 1
+  fi
+  return 0
+}
+
+# --- List open issues ---
+list_open_issues() {
+  if ! check_gh_cli; then return 1; fi
+  
+  echo -e "\n${CYAN}📋 Issues ouvertes :${NC}"
+  gh issue list --limit 10 --state open --json number,title,labels --template '
+  {{- range . -}}
+  {{- printf "#%v" .number -}} {{ .title }}
+  {{- if .labels -}} [{{- range $i, $label := .labels -}}{{- if $i -}}, {{- end -}}{{ $label.name }}{{- end -}}]{{- end }}
+  {{ end }}'
+}
+
+# --- Create a new issue ---
+create_issue() {
+  if ! check_gh_cli; then return 1; fi
+  
+  echo -e "\n${GREEN}➕ Création d'une nouvelle issue${NC}"
+  
+  read -p "📝 Titre de l'issue : " ISSUE_TITLE
+  [ -z "$ISSUE_TITLE" ] && { echo -e "${RED}✘ Titre requis.${NC}"; return 1; }
+  
+  read -p "📄 Description (optionnel) : " ISSUE_BODY
+  
+  echo -e "\n🏷️ Labels disponibles :"
+  for i in "${!DEFAULT_LABELS[@]}"; do
+    echo -e "  ${YELLOW}$((i+1)).${NC} ${DEFAULT_LABELS[i]}"
+  done
+  
+  read -p "🔖 Numéros des labels (ex: 1,3,5) ou personnalisés (ex: urgent,backend) : " label_input
+  
+  local labels_cmd=""
+  if [[ -n "$label_input" ]]; then
+    if [[ "$label_input" =~ ^[0-9,]+$ ]]; then
+      # Numbered selection
+      IFS=',' read -ra ADDR <<< "$label_input"
+      for i in "${ADDR[@]}"; do
+        if [[ $i -ge 1 && $i -le ${#DEFAULT_LABELS[@]} ]]; then
+          labels_cmd+="--label \"${DEFAULT_LABELS[$((i-1))]}\" "
+        fi
+      done
+    else
+      # Custom labels
+      IFS=',' read -ra ADDR <<< "$label_input"
+      for label in "${ADDR[@]}"; do
+        labels_cmd+="--label \"${label// /}\" "
+      done
+    fi
+  fi
+  
+  local cmd="gh issue create --title \"$ISSUE_TITLE\""
+  [[ -n "$ISSUE_BODY" ]] && cmd+=" --body \"$ISSUE_BODY\""
+  [[ -n "$labels_cmd" ]] && cmd+=" $labels_cmd"
+  
+  if $SIMULATE; then
+    echo -e "${CYAN}Simulate:${NC} $cmd"
+  else
+    eval "$cmd"
+    if [ $? -eq 0 ]; then
+      echo -e "${GREEN}✅ Issue créée avec succès !${NC}"
+    else
+      echo -e "${RED}❌ Erreur lors de la création de l'issue.${NC}"
+    fi
+  fi
+}
+
+# --- Close an issue ---
+close_issue() {
+  if ! check_gh_cli; then return 1; fi
+  
+  list_open_issues
+  echo
+  read -p "🔒 Numéro de l'issue à fermer (ex: 42) : " issue_number
+  
+  if [[ "$issue_number" =~ ^[0-9]+$ ]]; then
+    read -p "💬 Commentaire de fermeture (optionnel) : " close_comment
+    
+    local cmd="gh issue close $issue_number"
+    [[ -n "$close_comment" ]] && cmd+=" --comment \"$close_comment\""
+    
+    if $SIMULATE; then
+      echo -e "${CYAN}Simulate:${NC} $cmd"
+    else
+      eval "$cmd"
+      if [ $? -eq 0 ]; then
+        echo -e "${GREEN}✅ Issue #$issue_number fermée !${NC}"
+      else
+        echo -e "${RED}❌ Erreur lors de la fermeture.${NC}"
+      fi
+    fi
+  else
+    echo -e "${RED}❌ Numéro d'issue invalide.${NC}"
+  fi
+}
+
+# --- Manage labels ---
+manage_labels() {
+  if ! check_gh_cli; then return 1; fi
+  
+  echo -e "\n${MAGENTA}🏷️ Gestion des Labels${NC}"
+  PS3=$'\n👉 Ton choix : '
+  options=("📋 Lister les labels" "➕ Créer un label" "🗑️ Supprimer un label" "🔙 Retour")
+  
+  select opt in "${options[@]}"; do
+    case $REPLY in
+      1)
+        echo -e "\n${CYAN}📋 Labels existants :${NC}"
+        gh label list
+        ;;
+      2)
+        read -p "📝 Nom du label : " label_name
+        read -p "📄 Description : " label_desc
+        read -p "🎨 Couleur (hex sans #, ex: ff0000) : " label_color
+        
+        if [[ -n "$label_name" ]]; then
+          local cmd="gh label create \"$label_name\""
+          [[ -n "$label_desc" ]] && cmd+=" --description \"$label_desc\""
+          [[ -n "$label_color" ]] && cmd+=" --color \"$label_color\""
+          
+          if $SIMULATE; then
+            echo -e "${CYAN}Simulate:${NC} $cmd"
+          else
+            eval "$cmd"
+          fi
+        fi
+        ;;
+      3)
+        gh label list
+        read -p "🗑️ Nom du label à supprimer : " label_to_delete
+        if [[ -n "$label_to_delete" ]]; then
+          if $SIMULATE; then
+            echo -e "${CYAN}Simulate:${NC} gh label delete \"$label_to_delete\""
+          else
+            gh label delete "$label_to_delete" --confirm
+          fi
+        fi
+        ;;
+      4)
+        break
+        ;;
+      *)
+        echo -e "${RED}❌ Choix invalide.${NC}"
+        ;;
+    esac
+  done
+}
+
+# --- Auto-detect issue keywords in commit message ---
+detect_issue_keywords() {
+  local msg="$1"
+  local keywords=("fix" "fixes" "fixed" "close" "closes" "closed" "resolve" "resolves" "resolved")
+  
+  for keyword in "${keywords[@]}"; do
+    if [[ "$msg" =~ $keyword[[:space:]]+#([0-9]+) ]]; then
+      local issue_num="${BASH_REMATCH[1]}"
+      echo -e "${YELLOW}🔗 Détection automatique : ce commit pourrait fermer l'issue #$issue_num${NC}"
+      if ! $AUTO_CONFIRM; then
+        read -p "❓ Confirmer la fermeture de l'issue #$issue_num ? (y/N) : " confirm_close
+        if [[ "$confirm_close" =~ ^[yY]$ ]]; then
+          CLOSE_ISSUE="$issue_num"
+        fi
+      else
+        CLOSE_ISSUE="$issue_num"
+      fi
+      break
+    fi
+  done
+}
+
+# --- Auto-suggest creating issue based on commit ---
+suggest_issue_creation() {
+  local msg="$1"
+  local bug_keywords=("bug" "error" "crash" "broken" "issue" "problem")
+  local feature_keywords=("feature" "add" "implement" "create" "new")
+  local todo_keywords=("todo" "fixme" "hack" "temporary")
+  
+  for keyword in "${bug_keywords[@]}"; do
+    if [[ "$msg" =~ $keyword ]]; then
+      echo -e "${YELLOW}🐛 Ce commit semble corriger un bug.${NC}"
+      if ! $AUTO_CONFIRM; then
+        read -p "❓ Créer une issue de suivi ? (y/N) : " create_bug_issue
+        if [[ "$create_bug_issue" =~ ^[yY]$ ]]; then
+          quick_issue_creation "bug" "$msg"
+        fi
+      fi
+      return
+    fi
+  done
+  
+  for keyword in "${feature_keywords[@]}"; do
+    if [[ "$msg" =~ $keyword ]]; then
+      echo -e "${BLUE}✨ Ce commit semble ajouter une fonctionnalité.${NC}"
+      if ! $AUTO_CONFIRM; then
+        read -p "❓ Créer une issue pour documenter cette feature ? (y/N) : " create_feature_issue
+        if [[ "$create_feature_issue" =~ ^[yY]$ ]]; then
+          quick_issue_creation "enhancement" "$msg"
+        fi
+      fi
+      return
+    fi
+  done
+}
+
+# --- Quick issue creation ---
+quick_issue_creation() {
+  local suggested_label="$1"
+  local commit_msg="$2"
+  
+  echo -e "\n${GREEN}⚡ Création rapide d'issue${NC}"
+  ISSUE_TITLE="Issue: $commit_msg"
+  read -p "📝 Titre (Entrée pour garder '$ISSUE_TITLE') : " user_title
+  [[ -n "$user_title" ]] && ISSUE_TITLE="$user_title"
+  read -p "📄 Description courte : " ISSUE_BODY
+  
+  local cmd="gh issue create --title \"$ISSUE_TITLE\" --label \"$suggested_label\""
+  [[ -n "$ISSUE_BODY" ]] && cmd+=" --body \"$ISSUE_BODY\""
+  
+  if $SIMULATE; then
+    echo -e "${CYAN}Simulate:${NC} $cmd"
+  else
+    eval "$cmd"
+  fi
+}
+
+# --- Main issues management menu ---
+issues_management() {
+  if ! check_gh_cli; then return 1; fi
+  
+  display_banner
+  echo -e "\n${MAGENTA}🎯 Gestion des Issues GitHub${NC}"
+  
+  PS3=$'\n👉 Ton choix : '
+  options=("📋 Lister les issues ouvertes" "➕ Créer une nouvelle issue" "🔒 Fermer une issue" "🏷️ Gestion des labels" "🔙 Retour au menu principal")
+  
+  select opt in "${options[@]}"; do
+    case $REPLY in
+      1)
+        list_open_issues
+        ;;
+      2)
+        create_issue
+        ;;
+      3)
+        close_issue
+        ;;
+      4)
+        manage_labels
+        ;;
+      5)
+        break
+        ;;
+      *)
+        echo -e "${RED}❌ Choix invalide.${NC}"
+        ;;
+    esac
+    echo
+  done
 }
 
 # --- Handle critical branches (main/master) ---
@@ -170,6 +452,10 @@ get_user_inputs() {
     read -p "✏️ Message de commit : " MSG
     [ -z "$MSG" ] && { echo -e "${RED}✘ Message requis.${NC}"; exit 1; }
   fi
+  
+  # Auto-detect and handle issue keywords
+  detect_issue_keywords "$MSG"
+  suggest_issue_creation "$MSG"
 
   if ! $AUTO_CONFIRM; then
     read -p "🔄 Faire un pull --rebase avant ? (y/N) : " DO_SYNC
@@ -178,6 +464,14 @@ get_user_inputs() {
       read -p "➕ Utiliser un tag personnalisé (ex: v1.2.0) ou laisser en auto ? [auto|vX.Y.Z] : " CUSTOM_TAG
     fi
     read -p "🚀 Créer une GitHub Release ? (y/N) : " DO_RELEASE
+    
+    # Ask about issues management
+    if check_gh_cli &>/dev/null; then
+      read -p "🎯 Accéder au menu Issues ? (y/N) : " DO_ISSUES
+      if [[ "$DO_ISSUES" =~ ^[yY]$ ]]; then
+        issues_management
+      fi
+    fi
   else
     # Default values for auto-confirm mode
     DO_SYNC="Y"
@@ -194,6 +488,7 @@ summarize_and_confirm() {
   [[ "$DO_SYNC" =~ ^[yY]$ ]] && echo -e "• 🔄 Pull : ${CYAN}activé${NC}" || echo -e "• 🔄 Pull : désactivé"
   [[ "$DO_TAG" =~ ^[yY]$ ]] && echo -e "• 🏷️  Tag : ${YELLOW}${CUSTOM_TAG:-auto}${NC}" || echo -e "• 🏷️  Tag : non"
   [[ "$DO_RELEASE" =~ ^[yY]$ ]] && echo -e "• 🚀 Release : ${CYAN}oui${NC}" || echo -e "• 🚀 Release : non"
+  [[ -n "$CLOSE_ISSUE" ]] && echo -e "• 🔒 Fermer issue : ${YELLOW}#$CLOSE_ISSUE${NC}"
 
   if ! $AUTO_CONFIRM; then
     read -p $'\n✅ Confirmer et lancer ? (y/N) : ' confirm_run
@@ -207,6 +502,18 @@ perform_git_actions() {
   run_command git commit -m "$MSG" "Impossible de créer le commit."
   [[ "$DO_SYNC" =~ ^[yY]$ ]] && run_command git pull --rebase "Impossible de pull --rebase."
   run_command git push "Impossible de push."
+  
+  # Close issue if detected
+  if [[ -n "$CLOSE_ISSUE" ]] && check_gh_cli &>/dev/null; then
+    if $SIMULATE; then
+      echo -e "${CYAN}Simulate:${NC} gh issue close $CLOSE_ISSUE --comment 'Fixed by commit: $MSG'"
+    else
+      gh issue close "$CLOSE_ISSUE" --comment "Fixed by commit: $MSG"
+      if [ $? -eq 0 ]; then
+        echo -e "${GREEN}✅ Issue #$CLOSE_ISSUE fermée automatiquement !${NC}"
+      fi
+    fi
+  fi
 }
 
 # --- Handle tagging ---
@@ -282,6 +589,32 @@ main() {
 
   if $SIMULATE; then
     echo -e "\n${CYAN}🔢 Mode simulation activé : aucune commande ne sera exécutée.${NC}"
+  fi
+
+  # Show main menu if no message provided and not auto-confirm
+  if [[ -z "$MSG" ]] && ! $AUTO_CONFIRM; then
+    echo -e "\n${MAGENTA}🎯 Menu Principal${NC}"
+    PS3=$'\n👉 Ton choix : '
+    options=("🚀 Workflow Git complet" "📋 Gestion des Issues" "❌ Quitter")
+    
+    select opt in "${options[@]}"; do
+      case $REPLY in
+        1)
+          break
+          ;;
+        2)
+          issues_management
+          exit 0
+          ;;
+        3)
+          echo -e "${YELLOW}👋 À bientôt !${NC}"
+          exit 0
+          ;;
+        *)
+          echo -e "${RED}❌ Choix invalide.${NC}"
+          ;;
+      esac
+    done
   fi
 
   handle_critical_branch
