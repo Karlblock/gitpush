@@ -1,0 +1,18 @@
+{
+  "name": "emoji-prefix",
+  "version": "1.0.0",
+  "description": "Auto-add emoji prefix to commit messages",
+  "author": "Karl Block",
+  "hooks": ["pre-commit"],
+  "config": {
+    "prefixes": {
+      "feat": "✨",
+      "fix": "🐛",
+      "docs": "📚",
+      "style": "🎨",
+      "refactor": "♻️",
+      "test": "🧪",
+      "chore": "🔧"
+    }
+  }
+}

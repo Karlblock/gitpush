@@ -1,0 +1,31 @@
+$ gitpush --issues
+🔧 Gitpush v0.4.0 - Assistant Git interactif
+
+🎯 Gestion des Issues GitHub
+1) 📋 Lister les issues ouvertes
+2) ➕ Créer une nouvelle issue
+3) 🔒 Fermer une issue
+4) 🏷️ Gestion des labels
+5) 🔙 Retour au menu principal
+
+👉 Ton choix : 2
+
+➕ Création d'une nouvelle issue
+📝 Titre de l'issue : Add dark mode support for UI components
+📄 Description : Implement theme toggle with localStorage
+
+🏷️ Labels disponibles :
+  1. bug
+  2. enhancement
+  3. feature
+  4. documentation
+  5. question
+  6. help wanted
+  7. good first issue
+
+🔖 Numéros des labels (ex: 1,3,5) : 2,3
+
+Executing: gh issue create --title "Add dark mode support" \
+          --label "enhancement" --label "feature"
+✅ Issue créée avec succès !
+🔗 https://github.com/Karlblock/gitpush/issues/43

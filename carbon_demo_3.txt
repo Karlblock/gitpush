@@ -1,0 +1,28 @@
+$ gitpush
+📍 feature/auth-fix • 📦 gitpush
+
+✏️ Message de commit : fix: resolve login timeout #42
+🔗 Ce commit ferme automatiquement l'issue #42 !
+
+📦 Résumé :
+• 📝 fix: resolve login timeout #42
+• 🔄 Pull --rebase ✓
+• 🏷️ Tag auto v0.4.0 ✓
+• 🚀 GitHub Release ✓
+• 🔒 Ferme issue #42 ✓
+
+[git add . && commit && push]
+[gh issue close 42]
+[git tag v0.4.0 && push]
+[gh release create]
+
+✅ Workflow terminé avec succès !
+
+$ gitpush --issues
+🎯 Menu Issues :
+• 📋 Lister (10 ouvertes)
+• ➕ Créer avec labels
+• 🔒 Fermer avec commentaire
+• 🏷️ Gérer les labels
+
+✨ Machine de guerre v0.4.0 ! ✨

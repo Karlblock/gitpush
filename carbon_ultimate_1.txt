@@ -1,0 +1,40 @@
+╭─ gitpush v0.4.0 🚀 La machine de guerre pour Git & GitHub ─────────────────╮
+│                                                                              │
+│ $ gitpush                                                                    │
+│                                                                              │
+│ 📍 feature/new-login • 📦 awesome-project                                   │
+│                                                                              │
+│ 🎯 Que veux-tu faire ?                                                      │
+│   [1] 🚀 Workflow Git complet                                               │
+│   [2] 📋 Gestion des Issues  ← NOUVEAU !                                    │
+│   [3] ❌ Quitter                                                            │
+│                                                                              │
+│ > 1                                                                          │
+│                                                                              │
+│ ✏️  fix: resolve authentication timeout issue fixes #42                      │
+│                                                                              │
+│ 🤖 DÉTECTION INTELLIGENTE :                                                 │
+│   • 🔗 Fermeture automatique de l'issue #42                                 │
+│   • 🐛 Commit de type bugfix détecté                                        │
+│   • 📊 3 fichiers modifiés, +42/-13 lignes                                  │
+│                                                                              │
+│ 📦 ACTIONS PRÉVUES :                                                        │
+│   ✓ Commit avec message conventionnel                                       │
+│   ✓ Pull --rebase pour synchronisation                                      │
+│   ✓ Push vers origin/feature/new-login                                      │
+│   ✓ Fermeture automatique issue #42                                         │
+│   ✓ Tag automatique v0.4.1                                                  │
+│   ✓ GitHub Release avec notes                                               │
+│                                                                              │
+│ [ENTER] Confirmer • [ESC] Annuler                                           │
+│                                                                              │
+│ ⚡ Exécution...                                                              │
+│ ✅ Commit créé (42a7f3c)                                                    │
+│ ✅ Synchronisé avec origin                                                  │
+│ ✅ Issue #42 fermée avec succès                                             │
+│ ✅ Tag v0.4.1 créé et poussé                                                │
+│ ✅ Release GitHub publiée                                                   │
+│                                                                              │
+│ 🎉 Workflow terminé en 8.2s • 6 actions réussies                           │
+│                                                                              │
+╰─ Made with ❤️ by Karl Block • Star us on GitHub! ──────────────────────────╯

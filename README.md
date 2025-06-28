@@ -157,6 +157,28 @@ make uninstall
 
 ---
 
+## 🗺️ Roadmap & Vision
+
+- 📖 [**ROADMAP**](ROADMAP.md) - Découvre l'évolution prévue jusqu'à v1.0
+- 🚀 [**VISION**](VISION.md) - Notre philosophie et objectifs long terme  
+- ✨ [**NEXT FEATURES**](NEXT_FEATURES.md) - Les prochaines fonctionnalités
+- 🤝 [**CONTRIBUTING**](CONTRIBUTING.md) - Rejoins l'aventure !
+
+## 🌟 Pourquoi Gitpush ?
+
+- **🧠 Intelligent** : Détection automatique, suggestions IA (bientôt)
+- **🎯 Productif** : Workflows optimisés, moins de commandes
+- **🤝 Collaboratif** : Gestion d'équipe intégrée
+- **🔌 Extensible** : Architecture plugin-ready
+- **🌍 Universel** : Multi-plateforme, multi-langues
+
+## 📊 Stats & Communauté
+
+![GitHub stars](https://img.shields.io/github/stars/Karlblock/gitpush?style=social)
+![Contributors](https://img.shields.io/github/contributors/Karlblock/gitpush)
+![Discord](https://img.shields.io/discord/123456789?label=Discord&style=social)
+![Downloads](https://img.shields.io/github/downloads/Karlblock/gitpush/total)
+
 ## 📄 Licence
 
 Distribué sous licence MIT © [Karl Block](https://github.com/Karlblock)

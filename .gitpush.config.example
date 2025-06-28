@@ -1,0 +1,241 @@
+# 🚀 Gitpush Configuration File
+# Copy to ~/.gitpush/config.yml or .gitpush.yml in your project
+
+# ===== GENERAL SETTINGS =====
+general:
+  # Default behavior
+  auto_pull: true
+  auto_tag: false
+  auto_release: false
+  
+  # UI preferences
+  emoji: true
+  colors: true
+  animations: true
+  sound_effects: false
+  
+  # Language (fr, en, es, de, jp, etc.)
+  language: fr
+
+# ===== AI SETTINGS (v0.5.0+) =====
+ai:
+  enabled: false
+  provider: openai  # openai, anthropic, google, local
+  
+  # API Keys (or use env vars)
+  # openai_key: ${OPENAI_API_KEY}
+  # anthropic_key: ${ANTHROPIC_API_KEY}
+  
+  # AI Features
+  smart_commits: true
+  code_review: true
+  branch_naming: true
+  
+  # Local AI (Ollama)
+  local_model: codellama
+  local_endpoint: http://localhost:11434
+
+# ===== WORKFLOW SETTINGS =====
+workflow:
+  # Branch protection
+  protected_branches:
+    - main
+    - master
+    - production
+  
+  # Commit conventions
+  commit_types:
+    - feat
+    - fix
+    - docs
+    - style
+    - refactor
+    - test
+    - chore
+  
+  # Auto-flows
+  feature_branch_prefix: feature/
+  bugfix_branch_prefix: fix/
+  release_branch_prefix: release/
+
+# ===== GITHUB INTEGRATION =====
+github:
+  # Issues
+  auto_close_issues: true
+  issue_keywords:
+    - fixes
+    - closes
+    - resolves
+  
+  # Labels
+  default_labels:
+    bug:
+      color: d73a4a
+      description: Something isn't working
+    enhancement:
+      color: a2eeef
+      description: New feature or request
+    documentation:
+      color: 0075ca
+      description: Improvements or additions to documentation
+  
+  # Releases
+  release_draft: true
+  release_prerelease: false
+  generate_notes: true
+
+# ===== HOOKS & PLUGINS =====
+hooks:
+  pre_commit:
+    - lint
+    - test
+    - security_scan
+  
+  post_commit:
+    - notify_team
+  
+  pre_push:
+    - check_ci_status
+    - verify_branch_protection
+
+plugins:
+  # Official plugins
+  - name: gitpush-eslint
+    enabled: true
+  
+  - name: gitpush-prettier
+    enabled: true
+    
+  # Community plugins  
+  - name: awesome-git-stats
+    enabled: false
+    source: https://github.com/user/awesome-git-stats
+
+# ===== TEAM SETTINGS =====
+team:
+  # Collaboration
+  live_share: false
+  require_reviews: true
+  min_reviewers: 1
+  
+  # Notifications
+  notifications:
+    slack:
+      webhook: ${SLACK_WEBHOOK}
+      channel: "#dev"
+      mentions:
+        errors: "@channel"
+        releases: "@here"
+    
+    discord:
+      webhook: ${DISCORD_WEBHOOK}
+      
+    email:
+      enabled: false
+      smtp: smtp.gmail.com
+      port: 587
+
+# ===== STATISTICS =====
+analytics:
+  # Personal stats
+  track_commits: true
+  track_time: true
+  track_productivity: true
+  
+  # Team stats
+  leaderboard: true
+  achievements: true
+  
+  # Privacy
+  anonymous: false
+  share_stats: true
+
+# ===== ADVANCED =====
+advanced:
+  # Performance
+  parallel_operations: true
+  cache_enabled: true
+  cache_ttl: 3600
+  
+  # Security
+  sign_commits: false
+  verify_signatures: true
+  
+  # Experimental features
+  experimental:
+    voice_commands: false
+    ar_visualization: false
+    blockchain_commits: false
+
+# ===== ALIASES =====
+aliases:
+  # Quick commands
+  gpu: gitpush --yes
+  gpi: gitpush --issues
+  gpai: gitpush --ai
+  gps: gitpush --simulate
+  
+  # Workflows
+  feature: gitpush workflow new-feature
+  hotfix: gitpush workflow emergency-fix
+  release: gitpush workflow prepare-release
+
+# ===== THEMES =====
+theme:
+  # Preset themes: default, ocean, forest, sunset, matrix, cyberpunk
+  name: ocean
+  
+  # Custom colors (override theme)
+  colors:
+    primary: "#00D9FF"
+    success: "#00FF88"
+    warning: "#FFB800"
+    error: "#FF0066"
+    info: "#00D9FF"
+
+# ===== API SETTINGS =====
+api:
+  # Gitpush API (future)
+  enabled: false
+  endpoint: https://api.gitpush.dev
+  
+  # Metrics reporting
+  telemetry: true
+  crash_reports: true
+  
+  # Sync settings across devices
+  cloud_sync: false
+
+# ===== TEMPLATES =====
+templates:
+  # Issue templates
+  issues:
+    bug: |
+      **Description**:
+      **Steps to reproduce**:
+      **Expected**:
+      **Actual**:
+      **Environment**:
+    
+    feature: |
+      **Feature description**:
+      **Use case**:
+      **Proposed solution**:
+  
+  # Commit templates  
+  commits:
+    feat: "feat({{ scope }}): {{ message }}"
+    fix: "fix({{ scope }}): {{ message }} (fixes #{{ issue }})"
+
+# ===== SHORTCUTS =====
+shortcuts:
+  # Terminal shortcuts (future GUI)
+  "ctrl+g": gitpush
+  "ctrl+shift+g": gitpush --issues
+  "ctrl+alt+g": gitpush --ai
+
+# ===== DEBUG =====
+debug:
+  verbose: false
+  log_level: info  # debug, info, warn, error
+  log_file: ~/.gitpush/gitpush.log

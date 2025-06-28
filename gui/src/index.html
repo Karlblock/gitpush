@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gitpush - Git Workflow Revolution</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="../assets/logo.svg" alt="Gitpush">
+        <h1>Gitpush</h1>
+        <span class="version">v0.6.0-alpha</span>
+      </div>
+      
+      <nav class="nav-menu">
+        <ul>
+          <li class="active">
+            <a href="#" data-view="dashboard">
+              <span class="icon">📊</span>
+              Dashboard
+            </a>
+          </li>
+          <li>
+            <a href="#" data-view="commit">
+              <span class="icon">📝</span>
+              Commit
+            </a>
+          </li>
+          <li>
+            <a href="#" data-view="issues">
+              <span class="icon">📋</span>
+              Issues
+            </a>
+          </li>
+          <li>
+            <a href="#" data-view="ai">
+              <span class="icon">🤖</span>
+              AI Assistant
+            </a>
+          </li>
+          <li>
+            <a href="#" data-view="analytics">
+              <span class="icon">📈</span>
+              Analytics
+            </a>
+          </li>
+          <li>
+            <a href="#" data-view="settings">
+              <span class="icon">⚙️</span>
+              Settings
+            </a>
+          </li>
+        </ul>
+      </nav>
+      
+      <div class="user-info">
+        <img src="../assets/avatar.png" alt="User" class="avatar">
+        <div class="user-details">
+          <span class="username">Karl Block</span>
+          <span class="repo">gitpush/main</span>
+        </div>
+      </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="header">
+        <div class="branch-selector">
+          <span class="icon">🌿</span>
+          <select id="branch-select">
+            <option>main</option>
+            <option>feature/gui</option>
+            <option>dev</option>
+          </select>
+        </div>
+        
+        <div class="quick-actions">
+          <button class="btn btn-primary" id="quick-commit">
+            <span class="icon">🚀</span>
+            Quick Push
+          </button>
+          <button class="btn btn-secondary" id="sync">
+            <span class="icon">🔄</span>
+            Sync
+          </button>
+        </div>
+      </header>
+      
+      <!-- Content Views -->
+      <div class="content">
+        <!-- Dashboard View -->
+        <div id="dashboard-view" class="view active">
+          <h2>Dashboard</h2>
+          
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">📝</div>
+              <div class="stat-content">
+                <h3>234</h3>
+                <p>Total Commits</p>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-icon">📋</div>
+              <div class="stat-content">
+                <h3>18</h3>
+                <p>Open Issues</p>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-icon">🤖</div>
+              <div class="stat-content">
+                <h3>45%</h3>
+                <p>AI Usage</p>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-icon">🔥</div>
+              <div class="stat-content">
+                <h3>12</h3>
+                <p>Day Streak</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="recent-activity">
+            <h3>Recent Activity</h3>
+            <ul class="activity-list">
+              <li>
+                <span class="time">2 min ago</span>
+                <span class="action">feat: add GUI support</span>
+              </li>
+              <li>
+                <span class="time">15 min ago</span>
+                <span class="action">fix: resolve auth issue #42</span>
+              </li>
+              <li>
+                <span class="time">1 hour ago</span>
+                <span class="action">docs: update README</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Commit View -->
+        <div id="commit-view" class="view">
+          <h2>Commit Changes</h2>
+          
+          <div class="commit-interface">
+            <div class="changed-files">
+              <h3>Changed Files</h3>
+              <ul class="file-list">
+                <li class="file-item selected">
+                  <input type="checkbox" checked>
+                  <span class="file-name">src/main.js</span>
+                  <span class="file-stats">+42 -13</span>
+                </li>
+                <li class="file-item">
+                  <input type="checkbox">
+                  <span class="file-name">README.md</span>
+                  <span class="file-stats">+5 -2</span>
+                </li>
+              </ul>
+            </div>
+            
+            <div class="commit-form">
+              <div class="ai-suggestion">
+                <button class="btn-ai" id="generate-message">
+                  🤖 Generate with AI
+                </button>
+              </div>
+              
+              <input type="text" 
+                     id="commit-message" 
+                     placeholder="Commit message..."
+                     class="commit-input">
+              
+              <textarea id="commit-description" 
+                        placeholder="Extended description (optional)"
+                        class="commit-textarea"></textarea>
+              
+              <div class="commit-actions">
+                <button class="btn btn-primary" id="commit-button">
+                  Commit & Push
+                </button>
+                <button class="btn btn-secondary" id="commit-only">
+                  Commit Only
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- AI View -->
+        <div id="ai-view" class="view">
+          <h2>AI Assistant</h2>
+          
+          <div class="ai-interface">
+            <div class="ai-chat">
+              <div class="chat-messages">
+                <div class="message assistant">
+                  <span class="icon">🤖</span>
+                  <p>Bonjour ! Je suis ton assistant AI. Comment puis-je t'aider avec Git aujourd'hui ?</p>
+                </div>
+              </div>
+              
+              <div class="chat-input">
+                <input type="text" 
+                       placeholder="Ask anything about your code..."
+                       id="ai-input">
+                <button class="btn-send" id="ai-send">→</button>
+              </div>
+            </div>
+            
+            <div class="ai-features">
+              <h3>Quick Actions</h3>
+              <button class="feature-btn">📝 Generate Commit Message</button>
+              <button class="feature-btn">🔍 Review Code</button>
+              <button class="feature-btn">🌿 Suggest Branch Name</button>
+              <button class="feature-btn">🐛 Find Bugs</button>
+              <button class="feature-btn">📚 Generate Docs</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    
+    <!-- Terminal Output -->
+    <div class="terminal-panel">
+      <div class="terminal-header">
+        <span>Terminal Output</span>
+        <button class="terminal-toggle">▼</button>
+      </div>
+      <div class="terminal-content">
+        <pre id="terminal-output"></pre>
+      </div>
+    </div>
+  </div>
+  
+  <script src="renderer.js"></script>
+</body>
+</html>

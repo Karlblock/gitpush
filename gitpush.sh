@@ -1,6 +1,6 @@
 #!/bin/bash
 
-GITPUSH_VERSION="v0.4.0-dev"
+GITPUSH_VERSION="v1.0.0-beta"
 SIMULATE=false
 AUTO_CONFIRM=false
 MSG=""
@@ -27,6 +27,45 @@ NC="\033[0m" # No Color
 
 # --- Default labels for issues ---
 DEFAULT_LABELS=("bug" "enhancement" "feature" "documentation" "question" "help wanted" "good first issue")
+
+# --- Source AI manager if available ---
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [[ -f "$SCRIPT_DIR/lib/ai/ai_manager.sh" ]]; then
+  source "$SCRIPT_DIR/lib/ai/ai_manager.sh"
+  AI_AVAILABLE=true
+else
+  AI_AVAILABLE=false
+fi
+
+# --- Source Analytics manager if available ---
+if [[ -f "$SCRIPT_DIR/lib/analytics/stats_manager.sh" ]]; then
+  source "$SCRIPT_DIR/lib/analytics/stats_manager.sh"
+  ANALYTICS_AVAILABLE=true
+else
+  ANALYTICS_AVAILABLE=false
+fi
+
+# --- Source Team manager if available ---
+if [[ -f "$SCRIPT_DIR/lib/team/team_manager.sh" ]]; then
+  source "$SCRIPT_DIR/lib/team/team_manager.sh"
+  TEAM_AVAILABLE=true
+else
+  TEAM_AVAILABLE=false
+fi
+
+# --- Source Plugin manager if available ---
+if [[ -f "$SCRIPT_DIR/lib/plugins/plugin_manager.sh" ]]; then
+  source "$SCRIPT_DIR/lib/plugins/plugin_manager.sh"
+  PLUGINS_AVAILABLE=true
+  load_plugins
+else
+  PLUGINS_AVAILABLE=false
+fi
+
+# --- Source AI Conflict Resolver if available ---
+if [[ -f "$SCRIPT_DIR/lib/ai/ai_conflict_resolver.sh" ]] && $AI_AVAILABLE; then
+  source "$SCRIPT_DIR/lib/ai/ai_conflict_resolver.sh"
+fi
 
 # --- Helper function to run commands with simulation and error handling ---
 run_command() {
@@ -78,6 +117,14 @@ parse_args() {
         echo "  --yes          Exécute toutes les actions sans confirmation"
         echo "  --message|-m   Message de commit (pour mode non-interactif)"
         echo "  --issues       Gestion des issues GitHub"
+        echo "  --ai           Mode AI interactif (v0.5.0)"
+        echo "  --ai-commit    Générer message de commit avec AI"
+        echo "  --stats        Afficher les statistiques"
+        echo "  --team         Fonctionnalités équipe (v0.7.0)"
+        echo "  --plugins      Gérer les plugins (v0.8.0)"
+        echo "  --conflicts    Résoudre les conflits avec AI"
+        echo "  --gui          Lancer l'interface graphique (v0.6.0)"
+        echo "  --test         Lancer les tests"
         shift
         exit 0
         ;;
@@ -101,6 +148,68 @@ parse_args() {
       --issues)
         issues_management
         exit 0
+        ;;
+      --ai)
+        if $AI_AVAILABLE; then
+          ai_interactive_mode
+        else
+          echo -e "${RED}⚠️ AI features not available. Install AI manager first.${NC}"
+        fi
+        exit 0
+        ;;
+      --ai-commit)
+        if $AI_AVAILABLE; then
+          USE_AI_COMMIT=true
+        else
+          echo -e "${RED}⚠️ AI features not available.${NC}"
+        fi
+        shift
+        ;;
+      --stats)
+        if $ANALYTICS_AVAILABLE; then
+          analytics_menu
+        else
+          echo -e "${RED}⚠️ Analytics not available.${NC}"
+        fi
+        exit 0
+        ;;
+      --team)
+        if $TEAM_AVAILABLE; then
+          team_menu
+        else
+          echo -e "${RED}⚠️ Team features not available.${NC}"
+        fi
+        exit 0
+        ;;
+      --plugins)
+        if $PLUGINS_AVAILABLE; then
+          plugin_menu
+        else
+          echo -e "${RED}⚠️ Plugin system not available.${NC}"
+        fi
+        exit 0
+        ;;
+      --conflicts)
+        if $AI_AVAILABLE && type -t conflict_resolver_menu &>/dev/null; then
+          conflict_resolver_menu
+        else
+          echo -e "${RED}⚠️ AI conflict resolver not available.${NC}"
+        fi
+        exit 0
+        ;;
+      --gui)
+        echo -e "${CYAN}🖥️ Lancement de l'interface graphique...${NC}"
+        if command -v electron &> /dev/null; then
+          cd "$SCRIPT_DIR/gui" && npm start &
+        else
+          echo -e "${YELLOW}⚠️ Electron non installé. Installer avec: npm install -g electron${NC}"
+        fi
+        exit 0
+        ;;
+      --test)
+        echo -e "${CYAN}🧪 Lancement des tests...${NC}"
+        cd "$SCRIPT_DIR/tests" && ./run_tests.sh
+        exit $?
         ;;
       *)
         # Unknown argument, ignore for now or add error handling
@@ -449,7 +558,28 @@ handle_critical_branch() {
 # --- Get user inputs for commit, pull, tag, release ---
 get_user_inputs() {
   if [ -z "$MSG" ]; then
-    read -p "✏️ Message de commit : " MSG
+    # Check if AI commit is requested
+    if [[ "${USE_AI_COMMIT:-false}" == "true" ]] && $AI_AVAILABLE; then
+      echo -e "${CYAN}🤖 Génération du message avec AI...${NC}"
+      local diff=$(git diff --cached)
+      [[ -z "$diff" ]] && diff=$(git diff)
+      
+      if [[ -n "$diff" ]]; then
+        local ai_msg=$(generate_commit_message "$diff" 2>/dev/null | tail -n1)
+        if [[ -n "$ai_msg" && "$ai_msg" != "false" ]]; then
+          echo -e "${GREEN}📝 Suggestion AI : ${NC}$ai_msg"
+          read -p "✏️ Utiliser ce message ou modifier [Enter pour accepter] : " user_msg
+          MSG="${user_msg:-$ai_msg}"
+        else
+          read -p "✏️ Message de commit : " MSG
+        fi
+      else
+        echo -e "${YELLOW}⚠️ Aucun changement pour l'AI. Mode manuel.${NC}"
+        read -p "✏️ Message de commit : " MSG
+      fi
+    else
+      read -p "✏️ Message de commit : " MSG
+    fi
     [ -z "$MSG" ] && { echo -e "${RED}✘ Message requis.${NC}"; exit 1; }
   fi
   
@@ -500,6 +630,13 @@ summarize_and_confirm() {
 perform_git_actions() {
   run_command git add . "Impossible d'ajouter les fichiers."
   run_command git commit -m "$MSG" "Impossible de créer le commit."
+  
+  # Track commit in analytics
+  if $ANALYTICS_AVAILABLE; then
+    record_commit
+    [[ "${USE_AI_COMMIT:-false}" == "true" ]] && record_ai_usage
+  fi
+  
   [[ "$DO_SYNC" =~ ^[yY]$ ]] && run_command git pull --rebase "Impossible de pull --rebase."
   run_command git push "Impossible de push."
   
@@ -595,7 +732,15 @@ main() {
   if [[ -z "$MSG" ]] && ! $AUTO_CONFIRM; then
     echo -e "\n${MAGENTA}🎯 Menu Principal${NC}"
     PS3=$'\n👉 Ton choix : '
-    options=("🚀 Workflow Git complet" "📋 Gestion des Issues" "❌ Quitter")
+    if $AI_AVAILABLE && $ANALYTICS_AVAILABLE; then
+      options=("🚀 Workflow Git complet" "📋 Gestion des Issues" "🤖 Assistant AI" "📊 Analytics" "❌ Quitter")
+    elif $AI_AVAILABLE; then
+      options=("🚀 Workflow Git complet" "📋 Gestion des Issues" "🤖 Assistant AI" "❌ Quitter")
+    elif $ANALYTICS_AVAILABLE; then
+      options=("🚀 Workflow Git complet" "📋 Gestion des Issues" "📊 Analytics" "❌ Quitter")
+    else
+      options=("🚀 Workflow Git complet" "📋 Gestion des Issues" "❌ Quitter")
+    fi
     
     select opt in "${options[@]}"; do
       case $REPLY in
@@ -607,8 +752,19 @@ main() {
           exit 0
           ;;
         3)
-          echo -e "${YELLOW}👋 À bientôt !${NC}"
-          exit 0
+          if $AI_AVAILABLE; then
+            ai_interactive_mode
+            exit 0
+          else
+            echo -e "${YELLOW}👋 À bientôt !${NC}"
+            exit 0
+          fi
+          ;;
+        4)
+          if $AI_AVAILABLE; then
+            echo -e "${YELLOW}👋 À bientôt !${NC}"
+            exit 0
+          fi
           ;;
         *)
           echo -e "${RED}❌ Choix invalide.${NC}"
