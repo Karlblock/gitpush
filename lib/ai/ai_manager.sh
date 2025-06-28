@@ -183,7 +183,7 @@ analyze_code_pre_commit() {
     return $?
   fi
   
-  echo -e "${CYAN}🔍 Analyse pre-commit avec AI...${NC}"
+  echo -e "${CYAN}Analyzing code with AI...${NC}"
   
   local all_issues=()
   local security_score=100
@@ -216,24 +216,24 @@ analyze_code_pre_commit() {
   fi
   
   # Display results
-  echo -e "\n${MAGENTA}📊 Résultats de l'analyse :${NC}"
-  echo -e "🔒 Sécurité : ${security_score}%"
-  echo -e "✨ Qualité : ${quality_score}%"
+  echo -e "\n${MAGENTA}Analysis Results:${NC}"
+  echo -e "Security Score: ${security_score}%"
+  echo -e "Code Quality: ${quality_score}%"
   
   if [[ ${#all_issues[@]} -gt 0 ]]; then
-    echo -e "\n${YELLOW}⚠️ Problèmes détectés :${NC}"
+    echo -e "\n${YELLOW}Issues detected:${NC}"
     for issue in "${all_issues[@]}"; do
       echo -e "$issue"
     done
     
-    echo -e "\n${CYAN}💡 Suggestions d'amélioration :${NC}"
+    echo -e "\n${CYAN}Suggestions:${NC}"
     suggest_fixes "${all_issues[@]}"
     
-    read -p "❓ Continuer malgré les problèmes ? (y/N) : " continue_anyway
+    read -p "Continue anyway? (y/N): " continue_anyway
     [[ "$continue_anyway" =~ ^[yY]$ ]] && return 0 || return 1
   fi
   
-  echo -e "${GREEN}✅ Code excellent ! Aucun problème majeur détecté.${NC}"
+  echo -e "${GREEN}Code looks good! No major issues detected.${NC}"
   return 0
 }
 
@@ -381,16 +381,16 @@ suggest_branch_name() {
 
 # --- Interactive AI mode ---
 ai_interactive_mode() {
-  echo -e "${MAGENTA}🤖 Mode AI Interactif${NC}"
+  echo -e "${MAGENTA}AI Interactive Mode${NC}"
   
-  PS3=$'\n👉 Que veux-tu faire avec l\'AI ? '
+  PS3=$'\nSelect an option: '
   options=(
-    "📝 Générer un message de commit"
-    "🔍 Analyser le code avant commit"
-    "🌿 Suggérer un nom de branche"
-    "💡 Expliquer un diff"
-    "🔧 Configurer l'AI"
-    "🔙 Retour"
+    "Generate commit message"
+    "Analyze code before commit"
+    "Suggest branch name"
+    "Explain git diff"
+    "Configure AI settings"
+    "Back to main menu"
   )
   
   select opt in "${options[@]}"; do
@@ -403,7 +403,8 @@ ai_interactive_mode() {
         if [[ -n "$diff" ]]; then
           generate_commit_message "$diff"
         else
-          echo -e "${YELLOW}⚠️ Aucune modification à analyser${NC}"
+          echo -e "${YELLOW}No changes to analyze${NC}"
+          echo -e "${CYAN}Tip: Make some changes first, then run this command${NC}"
         fi
         ;;
       2)
@@ -411,15 +412,25 @@ ai_interactive_mode() {
         if [[ -z "$files" ]]; then
           files=$(git diff --name-only)
         fi
-        analyze_code_pre_commit "$files"
+        if [[ -n "$files" ]]; then
+          analyze_code_pre_commit "$files"
+        else
+          echo -e "${YELLOW}No modified files to analyze${NC}"
+          echo -e "${CYAN}Tip: Make some changes first, then run this command${NC}"
+        fi
         ;;
       3)
-        read -p "📝 Décris la tâche : " task_desc
-        local suggestion=$(suggest_branch_name "$task_desc")
-        echo -e "${GREEN}🌿 Suggestion : ${NC}$suggestion"
+        read -p "Describe the task: " task_desc
+        if [[ -n "$task_desc" ]]; then
+          local suggestion=$(suggest_branch_name "$task_desc")
+          echo -e "${GREEN}Branch suggestion: ${NC}$suggestion"
+        else
+          echo -e "${YELLOW}No description provided${NC}"
+        fi
         ;;
       4)
-        echo -e "${CYAN}💡 Feature en développement...${NC}"
+        echo -e "${CYAN}Feature coming soon...${NC}"
+        echo -e "${YELLOW}This will explain git diffs in natural language${NC}"
         ;;
       5)
         configure_ai_settings
@@ -428,7 +439,7 @@ ai_interactive_mode() {
         break
         ;;
       *)
-        echo -e "${RED}❌ Choix invalide${NC}"
+        echo -e "${RED}Invalid choice. Please select 1-6${NC}"
         ;;
     esac
     echo
