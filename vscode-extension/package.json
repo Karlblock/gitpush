@@ -2,11 +2,20 @@
   "name": "gitpush",
   "displayName": "Gitpush - AI-Powered Git Workflow",
   "description": "Smart Git automation with AI-powered commits, issue management, and team collaboration",
-  "version": "0.1.0",
-  "publisher": "karlblock",
+  "version": "1.1.0",
+  "publisher": "gitpush",
   "engines": {
-    "vscode": "^1.74.0"
+    "vscode": "^1.80.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/karlblock/gitpush.git"
+  },
+  "bugs": {
+    "url": "https://github.com/karlblock/gitpush/issues"
+  },
+  "homepage": "https://gitpush.dev",
+  "license": "MIT",
   "categories": [
     "Other",
     "SCM Providers"
@@ -19,10 +28,7 @@
     "workflow"
   ],
   "activationEvents": [
-    "onCommand:gitpush.smartCommit",
-    "onCommand:gitpush.createIssue",
-    "onCommand:gitpush.showStats",
-    "onCommand:gitpush.aiReview"
+    "onStartupFinished"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -66,8 +72,33 @@
           "type": "boolean",
           "default": true,
           "description": "Automatically suggest commit messages"
+        },
+        "gitpush.enableStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show Gitpush status in status bar"
+        },
+        "gitpush.gitpushPath": {
+          "type": "string",
+          "default": "",
+          "description": "Custom path to gitpush CLI (leave empty for auto-detection)"
         }
       }
+    },
+    "menus": {
+      "scm/title": [
+        {
+          "when": "scmProvider == git",
+          "command": "gitpush.smartCommit",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "gitpush.smartCommit",
+          "when": "gitOpenRepositoryCount != 0"
+        }
+      ]
     },
     "keybindings": [
       {
@@ -87,12 +118,15 @@
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./"
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package",
+    "publish": "vsce publish"
   },
   "devDependencies": {
-    "@types/vscode": "^1.74.0",
-    "@types/node": "^16.x",
-    "typescript": "^4.9.0"
+    "@types/vscode": "^1.80.0",
+    "@types/node": "^18.x",
+    "typescript": "^5.0.0",
+    "@vscode/vsce": "^2.19.0"
   },
   "dependencies": {
     "axios": "^1.6.0"
