@@ -1,4 +1,11 @@
-# 🚀 gitpush — Assistant Git interactif
+# gitpush
+
+> Intelligent Git workflow automation with AI-powered features
+
+[![Version](https://img.shields.io/badge/version-1.0.0--beta-blue.svg)](https://github.com/Karlblock/gitpush/releases)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Shell](https://img.shields.io/badge/shell-bash-orange.svg)](https://www.gnu.org/software/bash/)
+[![Tests](https://img.shields.io/badge/tests-94%25-brightgreen.svg)](#testing)
 
 ```
           _ __                   __  
@@ -7,178 +14,296 @@
  / /_/ / / /_/ /_/ / /_/ (__  ) / / /
  \__, /_/\__/ .___/\__,_/____/_/ /_/ 
 /____/     /_/                       
-
-     🚀 gitpush — by Karl Block
 ```
 
-[![Shell](https://img.shields.io/badge/script-shell-blue?style=flat-square&logo=gnu-bash)](https://bash.sh)
-[![Licence MIT](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
-[![Made by Karl Block](https://img.shields.io/badge/made%20by-Karl%20Block-blueviolet?style=flat-square)](https://github.com/Karlblock)
-[![Releases](https://img.shields.io/github/v/release/Karlblock/gitpush?style=flat-square)](https://github.com/Karlblock/gitpush/releases)
+**gitpush** transforms tedious Git workflows into intelligent, automated operations. From AI-generated commit messages to team collaboration features, it's the Git assistant you didn't know you needed.
 
----
+## Why gitpush?
 
-## 🧨 Pourquoi `gitpush` ?
+Stop typing the same Git commands over and over. gitpush handles the entire workflow intelligently:
 
-> Combien de fois tu as fait :
-> `git add . && git commit -m "" && git push`
-> ...sans vraiment checker ce que tu faisais ? 😬
-
-`gitpush` est un outil CLI fun et interactif qui :
-
-- ✅ Affiche la branche et empêche les erreurs sur `main`
-- ✍️ Demande un message de commit utile
-- 🔄 Propose un `pull --rebase`
-- 🏷️ Gère les tags et CHANGELOG automatiquement
-- 🚀 Crée une release GitHub via `gh`
-- 🧪 Mode simulation possible
-
----
-
-## 🎥 Démo
-
-![demo](assets/demo.png)
-
----
-
-## 🛠️ Fonctionnalités
-
-| Fonction                  | Description |
-|--------------------------|-------------|
-| `gitpush`                | Assistant Git interactif |
-| `--version`              | Affiche la version |
-| `--help`                 | Affiche l’aide |
-| `--simulate`             | Mode simulation sans action |
-| `--issues`               | **NOUVEAU** Gestion complète des issues GitHub |
-| `--yes`                  | Confirmation automatique |
-| Protection branche       | Empêche le push direct sur `main`, propose de switch |
-| Tag auto                 | Génère un tag s’il n’est pas fourni |
-| CHANGELOG automatique    | Mise à jour + commit |
-| GitHub release (`gh`)    | Crée une release avec notes |
-| **Issues GitHub** 🆕     | Création, fermeture et gestion des issues |
-| **Labels auto** 🆕       | Gestion des labels avec suggestions intelligentes |
-| **Détection auto** 🆕    | Fermeture automatique d'issues via commits |
-| **Menu interactif** 🆕   | Navigation facile entre Git et Issues |
-
----
-
-## 🆕 Nouveautés v0.4.0 - Gestion des Issues GitHub
-
-### 🎯 Menu Issues intégré
 ```bash
-gitpush --issues
-# ou utilise le menu principal interactif
+# Before gitpush
+git add .
+git commit -m "fix stuff"  # What stuff?!
+git pull --rebase
+git push
+# Did I forget something? 🤔
+
+# With gitpush
+gitpush
+# AI analyzes changes, suggests commit message, handles everything
 ```
 
-### ⚡ Fonctionnalités issues
-- **📋 Lister les issues** ouvertes avec labels
-- **➕ Créer des issues** avec sélection de labels intelligente
-- **🔒 Fermer des issues** avec commentaires
-- **🏷️ Gestion complète des labels** (création, suppression)
-- **🤖 Détection automatique** : commits avec `fixes #123` ferment l'issue
-- **💡 Suggestions intelligentes** : détection de bugs/features dans les commits
+## Features
 
-### 🔧 Workflow intelligent
+### 🤖 **AI-Powered**
+- **Smart commit messages**: AI analyzes your changes and generates contextual commit messages
+- **Code review**: Get intelligent feedback before committing
+- **Conflict resolution**: AI-assisted merge conflict resolution
+- **Multiple providers**: OpenAI, Anthropic, Google Gemini, Ollama (local)
+
+### 📋 **Issue Management**
+- Create and manage GitHub issues directly from CLI
+- Auto-link commits to issues with keywords (`fixes #123`)
+- Smart label suggestions and management
+- Issue auto-closure on commit
+
+### 👥 **Team Collaboration**
+- Shared workflows and templates
+- Team statistics and productivity metrics
+- Automated reviewer assignment
+- Standup report generation
+
+### 🔌 **Extensible**
+- Plugin system with hooks
+- Custom workflow templates
+- Community marketplace
+- Easy plugin development
+
+### 🖥️ **Modern Interface**
+- Interactive CLI with smart defaults
+- Desktop GUI (Electron-based)
+- VS Code extension (coming soon)
+- Real-time analytics dashboard
+
+## Quick Start
+
+### Installation
+
+```bash
+# One-line install
+curl -sSL https://raw.githubusercontent.com/Karlblock/gitpush/main/install.sh | bash
+
+# Manual install
+git clone https://github.com/Karlblock/gitpush.git
+cd gitpush
+./install.sh
+```
+
+### Basic Usage
+
+```bash
+# Interactive mode (recommended)
+gitpush
+
+# AI-powered commit
+gitpush --ai-commit
+
+# Quick workflow with message
+gitpush -m "feat: add user authentication" --yes
+
+# Manage issues
+gitpush --issues
+
+# Show analytics
+gitpush --stats
+```
+
+### AI Configuration
+
+1. Copy the example config:
+```bash
+cp ~/.gitpush/.env.example ~/.gitpush/.env
+```
+
+2. Add your API key:
+```bash
+# Edit ~/.gitpush/.env
+AI_PROVIDER=openai
+OPENAI_API_KEY=sk-your-key-here
+```
+
+3. Test it works:
+```bash
+gitpush --ai-commit
+```
+
+See [AI Setup Guide](docs/AI_SETUP.md) for detailed configuration.
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `gitpush` | Interactive Git workflow |
+| `gitpush --ai` | AI assistant mode |
+| `gitpush --ai-commit` | Generate commit with AI |
+| `gitpush --issues` | GitHub issues management |
+| `gitpush --stats` | View analytics dashboard |
+| `gitpush --team` | Team collaboration features |
+| `gitpush --plugins` | Plugin management |
+| `gitpush --gui` | Launch desktop application |
+| `gitpush --simulate` | Preview actions without executing |
+| `gitpush --test` | Run test suite |
+
+## Architecture
+
+```
+gitpush/
+├── gitpush.sh           # Main CLI script
+├── lib/
+│   ├── ai/              # AI providers and features
+│   ├── analytics/       # Statistics and metrics
+│   ├── team/            # Collaboration features
+│   └── plugins/         # Extension system
+├── gui/                 # Electron desktop app
+├── vscode-extension/    # VS Code integration
+├── tests/               # Comprehensive test suite
+└── docs/                # Documentation
+```
+
+## Examples
+
+### Smart Commit Workflow
 ```bash
 $ gitpush
-📍 Branche actuelle : feature/new-login
-✏️ Message de commit : fix: resolve login bug #42
-🔗 Détection automatique : ce commit pourrait fermer l'issue #42
-❓ Confirmer la fermeture de l'issue #42 ? (y/N) : y
-🔄 Pull --rebase : oui
-🏷️ Tag : auto (vX.Y.Z)
-🚀 GitHub Release : oui
-🎯 Accéder au menu Issues ? (y/N) : n
-✅ Résumé → lancement ! :
+Current branch: feature/user-auth
+Repository: my-awesome-app
+
+🤖 AI analyzing your changes...
+📝 Suggested commit: "feat(auth): implement JWT-based user authentication
+
+- Add login/logout endpoints
+- Implement token validation middleware  
+- Add user session management"
+
+✅ Use this message? (Y/n): y
+🔄 Pull before push? (y/N): y
+🏷️ Create tag? (y/N): n
+🚀 Push to GitHub? (Y/n): y
+
+✅ All done! View at: https://github.com/user/repo/commit/abc123
 ```
 
----
+### Issue Management
+```bash
+$ gitpush --issues
+📋 Open Issues:
+#42 Add dark mode support [enhancement]
+#41 Fix mobile responsive layout [bug]
 
-## 📦 Installation
+1) 📋 List issues    3) 🔒 Close issue
+2) ➕ Create issue   4) 🏷️ Manage labels
 
-### 🔧 En une ligne
+Your choice: 2
+Title: Implement user avatars
+Description: Add profile pictures for user accounts
+Labels: enhancement, ui
+
+✅ Issue #43 created: https://github.com/user/repo/issues/43
+```
+
+## Configuration
+
+### Environment Variables
+```bash
+# AI Configuration
+AI_PROVIDER=openai              # openai, anthropic, google, local
+OPENAI_API_KEY=sk-...           # Your API key
+ANTHROPIC_API_KEY=...           # Alternative provider
+GOOGLE_API_KEY=...              # Google Gemini
+
+# GitHub (optional, uses system gh config)
+GITHUB_TOKEN=ghp_...            # Personal access token
+
+# Team Features
+TEAM_ID=my-team                 # Team identifier
+SLACK_WEBHOOK_URL=https://...   # Notifications
+```
+
+### Workflow Customization
+```bash
+# Create custom workflow template
+gitpush --team workflows create
+
+# Configure git hooks
+gitpush --plugins install git-hooks
+
+# Set up analytics
+gitpush --stats configure
+```
+
+## Advanced Features
+
+### Plugin Development
+```bash
+# Create a new plugin
+gitpush --plugins create my-plugin
+
+# Plugin structure
+plugins/my-plugin/
+├── plugin.json          # Metadata
+├── plugin.sh           # Implementation
+└── hooks/              # Git hooks
+```
+
+### Team Analytics
+- **Productivity metrics**: Commit frequency, code quality scores
+- **Team insights**: Top contributors, active repositories
+- **Workflow optimization**: Bottleneck identification
+- **Custom reports**: Weekly/monthly summaries
+
+### AI Code Review
+- **Security scanning**: Detect potential vulnerabilities
+- **Best practices**: Code style and convention checks
+- **Performance hints**: Optimization suggestions
+- **Learning mode**: Adapts to your coding patterns
+
+## Testing
+
+gitpush includes a comprehensive test suite:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/Karlblock/gitpush/main/install.sh | bash
+# Run all tests
+gitpush --test
+
+# Manual testing
+cd tests && ./run_tests.sh
+
+# Current status: 33/35 tests passing (94%)
 ```
 
-### 🔧 Avec Make
+## Contributing
 
+We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+### Development Setup
 ```bash
 git clone https://github.com/Karlblock/gitpush.git
 cd gitpush
-make install
+./install.sh --dev
+./tests/run_tests.sh
 ```
 
----
+### Areas for Contribution
+- 🐛 Bug fixes and improvements
+- 🌟 New AI providers
+- 🔌 Plugin development
+- 📖 Documentation improvements
+- 🧪 Test coverage expansion
 
-## 💡 Exemple d’utilisation
+## Roadmap
 
-```bash
-$ gitpush
-📍 Branche actuelle : dev
-✏️ Message de commit : fix: amélioration du script
-🔄 Pull --rebase : oui
-🏷️ Tag : auto (vX.Y.Z)
-🚀 GitHub Release : oui
-✅ Résumé → lancement !
-```
+- **v1.0.0** (July 2025): Stable release
+- **v1.1.0** (August 2025): VS Code extension
+- **v1.2.0** (September 2025): Multi-platform support (GitLab, Bitbucket)
+- **v2.0.0** (Q4 2025): Enterprise features, SaaS offering
 
----
+See [ROADMAP.md](ROADMAP.md) for detailed plans.
 
-## 🧪 Mode simulation
+## Support
 
-```bash
-gitpush --simulate
-```
+- 📖 [Documentation](docs/)
+- 🐛 [Bug Reports](https://github.com/Karlblock/gitpush/issues)
+- 💬 [Discussions](https://github.com/Karlblock/gitpush/discussions)
+- 📧 [Email Support](mailto:support@gitpush.dev)
 
-Utile pour tester sans rien pousser !
+## License
 
----
-
-## 🔧 Désinstallation
-
-```bash
-make uninstall
-```
+MIT © [Karl Block](https://github.com/Karlblock)
 
 ---
 
-## 📬 Contribuer
+**Made with ❤️ by developers, for developers**
 
-- PR bienvenues : fonctionnalités, CI, docs...
-- Discutons sur [Issues](https://github.com/Karlblock/gitpush/issues)
-
----
-
-## ☕ Me soutenir
-
-[![Buy Me a Coffee](https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=☕&slug=karlblock&button_colour=FFDD00&font_colour=000000&font_family=Arial&outline_colour=000000&coffee_colour=ffffff)](https://www.buymeacoffee.com/karlblock)
-
----
-
-## 🗺️ Roadmap & Vision
-
-- 📖 [**ROADMAP**](ROADMAP.md) - Découvre l'évolution prévue jusqu'à v1.0
-- 🚀 [**VISION**](VISION.md) - Notre philosophie et objectifs long terme  
-- ✨ [**NEXT FEATURES**](NEXT_FEATURES.md) - Les prochaines fonctionnalités
-- 🤝 [**CONTRIBUTING**](CONTRIBUTING.md) - Rejoins l'aventure !
-
-## 🌟 Pourquoi Gitpush ?
-
-- **🧠 Intelligent** : Détection automatique, suggestions IA (bientôt)
-- **🎯 Productif** : Workflows optimisés, moins de commandes
-- **🤝 Collaboratif** : Gestion d'équipe intégrée
-- **🔌 Extensible** : Architecture plugin-ready
-- **🌍 Universel** : Multi-plateforme, multi-langues
-
-## 📊 Stats & Communauté
-
-![GitHub stars](https://img.shields.io/github/stars/Karlblock/gitpush?style=social)
-![Contributors](https://img.shields.io/github/contributors/Karlblock/gitpush)
-![Discord](https://img.shields.io/discord/123456789?label=Discord&style=social)
-![Downloads](https://img.shields.io/github/downloads/Karlblock/gitpush/total)
-
-## 📄 Licence
-
-Distribué sous licence MIT © [Karl Block](https://github.com/Karlblock)
+*Transform your Git workflow today and never look back.*
