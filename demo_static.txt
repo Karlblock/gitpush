@@ -1,0 +1,51 @@
+          _ __                   __  
+   ____ _(_) /_____  __  _______/ /_ 
+  / __ `/ / __/ __ \/ / / / ___/ __ \
+ / /_/ / / /_/ /_/ / /_/ (__  ) / / / 
+ \__, /_/\__/ .___/\__,_/____/_/ /_/  
+/____/     /_/                        
+
+        🚀 gitpush — by Karl Block
+🔧 Gitpush - Assistant Git interactif v0.4.0-dev
+
+📍 Branche actuelle : feature/new-login
+📦 Dépôt : gitpush
+
+🎯 Menu Principal
+1) 🚀 Workflow Git complet
+2) 📋 Gestion des Issues        <-- NOUVEAU !
+3) ❌ Quitter
+
+👉 Ton choix : 1
+
+✏️ Message de commit : fix: resolve authentication timeout issue #42
+🔗 Détection automatique : ce commit pourrait fermer l'issue #42  <-- NOUVEAU !
+❓ Confirmer la fermeture de l'issue #42 ? (y/N) : y
+🐛 Ce commit semble corriger un bug.                               <-- NOUVEAU !
+❓ Créer une issue de suivi ? (y/N) : n
+
+📦 Résumé de l'action :
+• 📝 Commit : fix: resolve authentication timeout issue #42
+• 🔄 Pull : activé
+• 🏷️  Tag : auto
+• 🚀 Release : oui
+• 🔒 Fermer issue : #42                                           <-- NOUVEAU !
+
+✅ Confirmer et lancer ? (y/N) : y
+
+Executing: git add .
+Executing: git commit -m 'fix: resolve authentication timeout issue #42'
+Executing: git pull --rebase
+Executing: git push
+Executing: gh issue close 42 --comment 'Fixed by commit: ...'     <-- NOUVEAU !
+✅ Issue #42 fermée automatiquement !
+Executing: git tag v0.4.0
+Executing: git push origin v0.4.0
+✅ Tag v0.4.0 ajouté et poussé.
+Executing: gh release create v0.4.0 --title v0.4.0 --generate-notes
+✅ Release GitHub créée !
+
+🎉 Workflow terminé avec succès !
+🌐 Ouverture de GitHub...
+
+✨ gitpush v0.4.0 - Machine de guerre pour la communauté ! ✨

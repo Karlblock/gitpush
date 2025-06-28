@@ -1,0 +1,36 @@
+$ gitpush
+🔧 Gitpush v0.4.0 - Assistant Git interactif
+
+📍 Branche actuelle : feature/new-login
+📦 Dépôt : gitpush
+
+🎯 Menu Principal
+1) 🚀 Workflow Git complet
+2) 📋 Gestion des Issues
+3) ❌ Quitter
+
+👉 Ton choix : 1
+
+✏️ Message de commit : fix: resolve authentication timeout issue #42
+🔗 Détection automatique : ce commit pourrait fermer l'issue #42
+❓ Confirmer la fermeture de l'issue #42 ? (y/N) : y
+
+📦 Résumé de l'action :
+• 📝 Commit : fix: resolve authentication timeout issue #42
+• 🔄 Pull : activé
+• 🏷️ Tag : auto (v0.4.0)
+• 🚀 Release : oui
+• 🔒 Fermer issue : #42
+
+✅ Confirmer et lancer ? (y/N) : y
+
+Executing: git add . && git commit && git push
+Executing: gh issue close 42 --comment 'Fixed by commit'
+✅ Issue #42 fermée automatiquement !
+Executing: git tag v0.4.0 && git push origin v0.4.0
+✅ Tag v0.4.0 ajouté et poussé.
+Executing: gh release create v0.4.0 --generate-notes
+✅ Release GitHub créée !
+
+🎉 Workflow terminé avec succès !
+✨ gitpush v0.4.0 - Machine de guerre pour la communauté ! ✨

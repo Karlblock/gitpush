@@ -1,0 +1,42 @@
+╭──────────────────────────────────────────────────────────────────────────────╮
+│  gitpush v0.4.0 🚀 L'assistant Git & GitHub ultime pour la communauté        │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+$ gitpush
+
+📍 feature/new-auth • 📦 awesome-project • 🌿 3 files changed
+
+✏️  Message de commit : fix: resolve authentication timeout fixes #42
+
+┌─ 🤖 DÉTECTION INTELLIGENTE ──────────────────────────────────────────────────┐
+│ • Issue #42 sera fermée automatiquement                                      │
+│ • Type: Bugfix critique détecté                                              │
+│ • Suggestion: Tag de patch v0.4.1                                            │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+📦 Workflow complet ? [Y/n] y
+
+⚡ EXÉCUTION...
+  ✓ git add .
+  ✓ git commit -m "fix: resolve authentication timeout fixes #42"
+  ✓ git pull --rebase origin feature/new-auth
+  ✓ git push origin feature/new-auth
+  ✓ gh issue close 42 --comment "Résolu dans le commit abc123"
+  ✓ git tag v0.4.1 && git push origin v0.4.1
+  ✓ gh release create v0.4.1 --generate-notes
+
+✅ SUCCÈS! 6 actions complétées en 7.3s
+
+┌─ 🆕 NOUVELLES FONCTIONNALITÉS v0.4.0 ────────────────────────────────────────┐
+│                                                                               │
+│  📋 Gestion Issues      • Créer, fermer, labelliser                         │
+│  🤖 IA Détection        • Analyse commits & suggestions                      │
+│  🏷️  Smart Labels       • Attribution automatique                            │
+│  🔗 Intégration         • Fermeture par commit (fixes #n)                   │
+│  📊 Statistiques        • Tableau de bord intégré                           │
+│                                                                               │
+│  $ gitpush --issues     Accès direct au gestionnaire                        │
+│                                                                               │
+└───────────────────────────────────────────────────────────────────────────────┘
+
+⭐ github.com/karlblock/gitpush • Made with ❤️  by Karl Block
