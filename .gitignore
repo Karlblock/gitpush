@@ -1,8 +1,54 @@
-# Cache, temp, et artefacts
+# Dependencies
+node_modules/
 *.log
-*.tmp
-*.bak
-.DS_Store
-__pycache__/
+
+# Build outputs
+dist/
+build/
+*.out
+
+# IDE stuff
+.vscode/
+.idea/
 *.swp
-GEMINI.md
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Env files (NEVER commit these!)
+.env
+.env.local
+.env.*.local
+
+# User data
+~/.gitpush/
+stats.json
+
+# Temp files
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Karl's personal test files
+test-*.sh
+karl-test/
+
+# That weird backup folder that keeps appearing
+backup_old/
+
+# Plugin development
+plugins_dev/
+*.plugin.dev
+
+# GUI build artifacts
+gui/dist/
+gui/out/
+*.electron

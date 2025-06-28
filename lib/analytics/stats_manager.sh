@@ -13,6 +13,7 @@ CYAN="\033[1;36m"
 NC="\033[0m"
 
 # Stats file location
+# FIXME: should use XDG_DATA_HOME instead of hardcoded path
 STATS_FILE="$HOME/.gitpush/stats.json"
 STATS_DIR="$(dirname "$STATS_FILE")"
 
@@ -52,6 +53,7 @@ record_commit() {
   ((total++))
   
   # Update daily stats
+  # TODO: this jq command is getting complex, maybe switch to sqlite?
   jq --arg date "$date" --arg hour "$hour" --arg total "$total" '
     .total_commits = ($total | tonumber) |
     .daily_stats[$date].commits = ((.daily_stats[$date].commits // 0) + 1) |
@@ -83,6 +85,7 @@ show_personal_stats() {
   local tags_created=$(jq -r '.tags_created' "$STATS_FILE")
   
   # Last 30 days stats
+  # NOTE: date command syntax differs between GNU and BSD, handle both
   local last_30_days=$(date -d "30 days ago" +%Y-%m-%d 2>/dev/null || date -v-30d +%Y-%m-%d)
   local recent_commits=$(jq -r --arg date "$last_30_days" '
     .daily_stats | to_entries | 
@@ -166,6 +169,7 @@ show_team_stats() {
   echo -e "\n${MAGENTA}👥 Statistiques d'Équipe${NC}"
   echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
   
+  # TODO: implement real team stats once we have a backend
   # Mock data for demo
   echo -e "🏆 ${YELLOW}Top Contributors (Cette semaine)${NC}"
   echo -e "├─ 🥇 Alice : 47 commits"
@@ -187,6 +191,7 @@ show_team_stats() {
 
 # Export weekly report
 export_weekly_report() {
+  # BUG: report template has hardcoded placeholders X, Y, Z
   local report_file="$HOME/.gitpush/weekly_report_$(date +%Y-%m-%d).md"
   
   cat > "$report_file" << 'EOF'

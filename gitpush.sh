@@ -95,9 +95,9 @@ display_banner() {
  \__, /_/\__/ .___/\__,_/____/_/ /_/  
 /____/     /_/                        
 
-        🚀 gitpush — by Karl Block
+        gitpush — by Karl Block
 EOF
-  echo -e "${CYAN}🔧 Gitpush - Assistant Git interactif ${MAGENTA}$GITPUSH_VERSION${NC}"
+  echo -e "${CYAN}Gitpush ${MAGENTA}$GITPUSH_VERSION${NC} - Git workflow automation"
 }
 
 # --- Parse command line arguments ---
@@ -153,7 +153,7 @@ parse_args() {
         if $AI_AVAILABLE; then
           ai_interactive_mode
         else
-          echo -e "${RED}⚠️ AI features not available. Install AI manager first.${NC}"
+          echo -e "${RED}AI features not available. Configure with --ai --configure${NC}"
         fi
         exit 0
         ;;
@@ -161,7 +161,7 @@ parse_args() {
         if $AI_AVAILABLE; then
           USE_AI_COMMIT=true
         else
-          echo -e "${RED}⚠️ AI features not available.${NC}"
+          echo -e "${RED}AI not configured${NC}"
         fi
         shift
         ;;
@@ -169,7 +169,7 @@ parse_args() {
         if $ANALYTICS_AVAILABLE; then
           analytics_menu
         else
-          echo -e "${RED}⚠️ Analytics not available.${NC}"
+          echo -e "${RED}Analytics module not found${NC}"
         fi
         exit 0
         ;;
@@ -177,7 +177,7 @@ parse_args() {
         if $TEAM_AVAILABLE; then
           team_menu
         else
-          echo -e "${RED}⚠️ Team features not available.${NC}"
+          echo -e "${RED}Team module not found${NC}"
         fi
         exit 0
         ;;
@@ -185,7 +185,7 @@ parse_args() {
         if $PLUGINS_AVAILABLE; then
           plugin_menu
         else
-          echo -e "${RED}⚠️ Plugin system not available.${NC}"
+          echo -e "${RED}Plugin system not found${NC}"
         fi
         exit 0
         ;;
@@ -193,21 +193,21 @@ parse_args() {
         if $AI_AVAILABLE && type -t conflict_resolver_menu &>/dev/null; then
           conflict_resolver_menu
         else
-          echo -e "${RED}⚠️ AI conflict resolver not available.${NC}"
+          echo -e "${RED}Conflict resolver not available${NC}"
         fi
         exit 0
         ;;
       --gui)
-        echo -e "${CYAN}🖥️ Lancement de l'interface graphique...${NC}"
+        echo -e "${CYAN}Launching GUI...${NC}"
         if command -v electron &> /dev/null; then
           cd "$SCRIPT_DIR/gui" && npm start &
         else
-          echo -e "${YELLOW}⚠️ Electron non installé. Installer avec: npm install -g electron${NC}"
+          echo -e "${YELLOW}Electron not installed. Run: npm install -g electron${NC}"
         fi
         exit 0
         ;;
       --test)
-        echo -e "${CYAN}🧪 Lancement des tests...${NC}"
+        echo -e "${CYAN}Running tests...${NC}"
         cd "$SCRIPT_DIR/tests" && ./run_tests.sh
         exit $?
         ;;
@@ -221,15 +221,18 @@ parse_args() {
 
 # --- Get Git context (branch and repo name) ---
 get_git_context() {
+  # TODO: this is getting called twice sometimes, investigate
   current_branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
   if [ -z "$current_branch" ]; then
-    echo -e "${RED}Error:${NC} Pas un dépôt Git. Quitting."
+    echo -e "${RED}Error:${NC} Not a git repository"
     exit 1
   fi
+  
+  # HACK: basename fails with some remote URLs, but works 90% of the time
   repo_name=$(basename -s .git "$(git config --get remote.origin.url 2>/dev/null)")
 
-  echo -e "\n📍 Branche actuelle : ${MAGENTA}$current_branch${NC}"
-  echo -e "📦 Dépôt : ${CYAN}${repo_name:-Dépôt inconnu}${NC}"
+  echo -e "\n📍 Current branch: ${MAGENTA}$current_branch${NC}"
+  echo -e "📦 Repository: ${CYAN}${repo_name:-Unknown}${NC}"
 }
 
 # --- Check if GitHub CLI is available ---
@@ -326,7 +329,7 @@ close_issue() {
     else
       eval "$cmd"
       if [ $? -eq 0 ]; then
-        echo -e "${GREEN}✅ Issue #$issue_number fermée !${NC}"
+        echo -e "${GREEN}Issue #$issue_number closed${NC}"
       else
         echo -e "${RED}❌ Erreur lors de la fermeture.${NC}"
       fi
@@ -542,7 +545,7 @@ handle_critical_branch() {
               fi
               ;;
             3)
-              echo -e "${YELLOW}👋 À bientôt !${NC}"
+              echo -e "${YELLOW}Goodbye!${NC}"
               exit 0
               ;;
             *)
@@ -580,7 +583,7 @@ get_user_inputs() {
     else
       read -p "✏️ Message de commit : " MSG
     fi
-    [ -z "$MSG" ] && { echo -e "${RED}✘ Message requis.${NC}"; exit 1; }
+    [ -z "$MSG" ] && { echo -e "${RED}Error: Commit message required${NC}"; exit 1; }
   fi
   
   # Auto-detect and handle issue keywords
@@ -675,7 +678,7 @@ handle_tagging() {
     else
       run_command git tag "$NEW_TAG" "Impossible de créer le tag."
       run_command git push origin "$NEW_TAG" "Impossible de pousser le tag."
-      echo -e "${GREEN}✅ Tag $NEW_TAG ajouté et poussé.${NC}"
+      echo -e "${GREEN}Tag $NEW_TAG created and pushed${NC}"
 
       # Update CHANGELOG
       if ! grep -q "^## $NEW_TAG" CHANGELOG.md 2>/dev/null; then
@@ -730,7 +733,7 @@ main() {
 
   # Show main menu if no message provided and not auto-confirm
   if [[ -z "$MSG" ]] && ! $AUTO_CONFIRM; then
-    echo -e "\n${MAGENTA}🎯 Menu Principal${NC}"
+    echo -e "\n${MAGENTA}Main Menu${NC}"
     PS3=$'\n👉 Ton choix : '
     if $AI_AVAILABLE && $ANALYTICS_AVAILABLE; then
       options=("🚀 Workflow Git complet" "📋 Gestion des Issues" "🤖 Assistant AI" "📊 Analytics" "❌ Quitter")
@@ -756,13 +759,13 @@ main() {
             ai_interactive_mode
             exit 0
           else
-            echo -e "${YELLOW}👋 À bientôt !${NC}"
+            echo -e "${YELLOW}Goodbye!${NC}"
             exit 0
           fi
           ;;
         4)
           if $AI_AVAILABLE; then
-            echo -e "${YELLOW}👋 À bientôt !${NC}"
+            echo -e "${YELLOW}Goodbye!${NC}"
             exit 0
           fi
           ;;

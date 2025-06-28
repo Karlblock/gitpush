@@ -15,6 +15,7 @@ NC="\033[0m"
 # Plugin directories
 PLUGIN_DIR="$HOME/.gitpush/plugins"
 SYSTEM_PLUGIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../../plugins"
+# TODO: registry API doesn't exist yet, just a placeholder
 PLUGIN_REGISTRY="https://api.gitpush.dev/plugins"
 
 # Plugin hooks
@@ -95,6 +96,7 @@ execute_hook() {
   shift
   local args="$@"
   
+  # HACK: using : as delimiter might break if function names contain :
   local functions="${HOOKS[$hook_name]}"
   if [[ -z "$functions" ]]; then
     return 0
@@ -155,6 +157,7 @@ install_plugin() {
   # Check if it's a URL
   if [[ "$plugin_name" =~ ^https?:// ]]; then
     # Download from URL
+    # SECURITY: we're cloning arbitrary URLs, should validate first
     local temp_dir=$(mktemp -d)
     git clone "$plugin_name" "$temp_dir" 2>/dev/null
     
@@ -173,6 +176,7 @@ install_plugin() {
     fi
   else
     # Install from registry (future feature)
+    # TODO: implement when we have a real plugin registry
     echo -e "${YELLOW}⚠️ Plugin registry not yet available${NC}"
   fi
 }
@@ -227,6 +231,7 @@ plugin_menu() {
         ;;
       5)
         read -p "📦 Nom du plugin à désinstaller : " plugin_name
+        # WARNING: no confirmation, just deletes the plugin
         rm -rf "$PLUGIN_DIR/$plugin_name"
         echo -e "${GREEN}✅ Plugin désinstallé${NC}"
         ;;

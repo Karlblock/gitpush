@@ -16,8 +16,10 @@ NC="\033[0m"
 TESTS_RUN=0
 TESTS_PASSED=0
 TESTS_FAILED=0
+# TODO: add timing for each test
 
 # Test framework
+# NOTE: this is a poor man's test framework, consider using bats-core
 assert_equals() {
   local expected="$1"
   local actual="$2"
@@ -81,7 +83,8 @@ test_basic_functionality() {
   
   # Test version
   local version=$(../gitpush.sh --version 2>&1)
-  assert_contains "$version" "v0." "Version command works"
+  # FIXME: hardcoded version check, will break when we hit v1.0
+  assert_contains "$version" "v1." "Version command works"
 }
 
 # Test AI features
@@ -92,6 +95,7 @@ test_ai_features() {
   assert_file_exists "../lib/ai/ai_manager.sh" "AI manager exists"
   
   # Test AI availability check
+  # BUG: sourcing the file pollutes our namespace
   source ../lib/ai/ai_manager.sh
   local ai_available=$(check_ai_available)
   assert_equals "false" "$ai_available" "AI availability check works"

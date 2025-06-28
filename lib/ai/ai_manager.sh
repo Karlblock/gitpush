@@ -24,6 +24,7 @@ declare -A AI_PROVIDERS=(
 check_ai_available() {
   local provider="${AI_PROVIDER:-openai}"
   
+  # TODO: cache this check, it's called too often
   case "$provider" in
     "openai")
       [[ -n "${OPENAI_API_KEY}" ]] || { echo "false"; return 1; }
@@ -53,13 +54,14 @@ generate_commit_message() {
   local provider="${AI_PROVIDER:-openai}"
   
   if [[ $(check_ai_available) == "false" ]]; then
-    echo -e "${YELLOW}⚠️ AI non configuré. Utilise ${CYAN}export OPENAI_API_KEY=...${NC}"
+    echo -e "${YELLOW}AI not configured. Use ${CYAN}export OPENAI_API_KEY=...${NC}"
     return 1
   fi
   
-  echo -e "${CYAN}🤖 Analyse des changements avec AI...${NC}"
+  echo -e "${CYAN}Analyzing changes with AI...${NC}"
   
   # Prepare the prompt
+  # NOTE: keep this prompt simple, longer prompts = worse results (learned the hard way)
   local prompt="Based on these git changes, generate a conventional commit message (feat/fix/docs/style/refactor/test/chore). Be concise and specific:\n\n$diff_content\n\nFormat: type(scope): description"
   
   local response=""
@@ -80,11 +82,11 @@ generate_commit_message() {
   esac
   
   if [[ -n "$response" ]]; then
-    echo -e "${GREEN}✨ Suggestion AI :${NC} $response"
+    echo -e "${GREEN}AI suggestion:${NC} $response"
     echo "$response"
     return 0
   else
-    echo -e "${RED}❌ Erreur AI. Revenir au mode manuel.${NC}"
+    echo -e "${RED}AI error. Falling back to manual mode.${NC}"
     return 1
   fi
 }
@@ -300,6 +302,7 @@ check_code_quality() {
   for file in $files; do
     if [[ -f "$file" ]]; then
       # Check for very long lines
+      # FIXME: 120 chars is arbitrary, should be configurable
       if grep -qE "^.{120,}$" "$file"; then
         quality_issues+="  📐 ${YELLOW}[STYLE]${NC} Lignes trop longues dans $file\n"
       fi
@@ -427,6 +430,7 @@ ai_interactive_mode() {
 
 # --- Configure AI settings ---
 configure_ai_settings() {
+  # WARNING: storing API keys in .bashrc is not ideal but it's what users expect
   echo -e "\n${CYAN}🔧 Configuration AI${NC}"
   echo -e "Provider actuel : ${YELLOW}${AI_PROVIDER:-non configuré}${NC}"
   
