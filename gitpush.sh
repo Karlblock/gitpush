@@ -28,8 +28,15 @@ NC="\033[0m" # No Color
 # --- Default labels for issues ---
 DEFAULT_LABELS=("bug" "enhancement" "feature" "documentation" "question" "help wanted" "good first issue")
 
-# --- Source AI manager if available ---
+# --- Load .env file if exists ---
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [[ -f "$SCRIPT_DIR/.env" ]]; then
+  export $(grep -v '^#' "$SCRIPT_DIR/.env" | xargs)
+elif [[ -f "$HOME/.gitpush/.env" ]]; then
+  export $(grep -v '^#' "$HOME/.gitpush/.env" | xargs)
+fi
+
+# --- Source AI manager if available ---
 if [[ -f "$SCRIPT_DIR/lib/ai/ai_manager.sh" ]]; then
   source "$SCRIPT_DIR/lib/ai/ai_manager.sh"
   AI_AVAILABLE=true

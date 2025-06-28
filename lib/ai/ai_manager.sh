@@ -12,6 +12,13 @@ MAGENTA="\033[1;35m"
 CYAN="\033[1;36m"
 NC="\033[0m"
 
+# Load .env file if it exists
+if [[ -f ".env" ]]; then
+  export $(grep -v '^#' .env | xargs)
+elif [[ -f "$HOME/.gitpush/.env" ]]; then
+  export $(grep -v '^#' "$HOME/.gitpush/.env" | xargs)
+fi
+
 # AI Providers configuration
 declare -A AI_PROVIDERS=(
   ["openai"]="https://api.openai.com/v1/chat/completions"
