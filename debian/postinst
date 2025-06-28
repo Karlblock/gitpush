@@ -1,0 +1,31 @@
+#!/bin/bash
+set -e
+
+# Post-installation script for gitpush
+
+echo "Setting up gitpush..."
+
+# Make sure the binary is executable
+chmod +x /usr/local/bin/gitpush
+
+# Create symlink for compatibility
+if [ ! -L /usr/bin/gitpush ]; then
+    ln -sf /usr/local/bin/gitpush /usr/bin/gitpush
+fi
+
+# Display installation success message
+cat << 'EOF'
+
+🚀 Gitpush installed successfully!
+
+Quick start:
+  gitpush --configure    # Set up AI providers
+  gitpush               # Interactive mode
+  gitpush --help        # See all options
+
+Documentation: https://gitpush.dev/docs
+VS Code extension: Search "Gitpush" in marketplace
+
+EOF
+
+exit 0

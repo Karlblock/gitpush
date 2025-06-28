@@ -1,0 +1,7 @@
+gitpush.sh usr/local/bin/gitpush
+lib/* usr/local/lib/gitpush/
+plugins/* usr/local/share/gitpush/plugins/
+docs/* usr/share/doc/gitpush/
+*.md usr/share/doc/gitpush/
+.env.example usr/share/gitpush/
+.gitpush.config.example usr/share/gitpush/

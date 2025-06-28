@@ -1,0 +1,61 @@
+{
+  "name": "gitpush-cli",
+  "version": "1.0.0",
+  "description": "AI-powered Git workflow automation with smart commits and team collaboration",
+  "main": "gitpush.sh",
+  "bin": {
+    "gitpush": "./gitpush.sh"
+  },
+  "scripts": {
+    "install": "chmod +x gitpush.sh",
+    "test": "bash tests/run_tests.sh",
+    "postinstall": "node -e \"console.log('\\n🚀 Gitpush installed! Run \\\"gitpush --configure\\\" to get started.\\n')\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/karlblock/gitpush.git"
+  },
+  "keywords": [
+    "git",
+    "ai",
+    "automation",
+    "workflow",
+    "commit",
+    "github",
+    "cli",
+    "development",
+    "productivity",
+    "team-collaboration"
+  ],
+  "author": "Karl Block <karl@gitpush.dev>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/karlblock/gitpush/issues"
+  },
+  "homepage": "https://gitpush.dev",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "os": [
+    "linux",
+    "darwin",
+    "win32"
+  ],
+  "dependencies": {},
+  "devDependencies": {},
+  "files": [
+    "gitpush.sh",
+    "lib/",
+    "plugins/",
+    "docs/",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    ".env.example",
+    ".gitpush.config.example"
+  ],
+  "preferGlobal": true,
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  }
+}

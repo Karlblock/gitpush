@@ -1,0 +1,24 @@
+Package: gitpush
+Version: 1.0.0
+Section: utils
+Priority: optional
+Architecture: all
+Maintainer: Karl Block <karl@gitpush.dev>
+Depends: git (>= 2.0), bash (>= 4.0), curl
+Recommends: gh (>= 2.0)
+Suggests: nodejs (>= 16.0)
+Homepage: https://gitpush.dev
+Description: AI-powered Git workflow automation
+ Gitpush is a comprehensive Git workflow automation tool that brings AI-powered
+ smart commits, team collaboration features, and advanced analytics to your
+ development workflow.
+ .
+ Features include:
+  * AI-powered commit message generation
+  * Intelligent code review and conflict resolution
+  * Team collaboration and analytics
+  * Plugin architecture for extensibility
+  * VS Code integration
+  * Multi-platform support
+ .
+ This package includes the complete CLI tool with all modules and plugins.
