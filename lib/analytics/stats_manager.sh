@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# 📊 Gitpush Analytics Manager
+# Gitpush Analytics Manager
 # Track and display user statistics
 
 # Colors
@@ -143,7 +143,7 @@ record_ai_usage() {
 show_personal_stats() {
   init_stats
   
-  echo -e "\n${MAGENTA}📊 Tes Statistiques Git${NC}"
+  echo -e "\n${MAGENTA} Tes Statistiques Git${NC}"
   echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
   
   local total_commits=$(jq -r '.total_commits' "$STATS_FILE")
@@ -162,16 +162,16 @@ show_personal_stats() {
     add // 0
   ' "$STATS_FILE")
   
-  echo -e "📝 ${GREEN}Commits totaux :${NC} $total_commits"
-  echo -e "🚀 ${GREEN}Pushes :${NC} $total_pushes"
-  echo -e "📋 ${GREEN}Issues créées :${NC} $issues_created"
-  echo -e "✅ ${GREEN}Issues fermées :${NC} $issues_closed"
-  echo -e "🤖 ${GREEN}Commits AI :${NC} $ai_commits"
-  echo -e "🏷️  ${GREEN}Tags créés :${NC} $tags_created"
+  echo -e " ${GREEN}Commits totaux :${NC} $total_commits"
+  echo -e " ${GREEN}Pushes :${NC} $total_pushes"
+  echo -e " ${GREEN}Issues créées :${NC} $issues_created"
+  echo -e " ${GREEN}Issues fermées :${NC} $issues_closed"
+  echo -e " ${GREEN}Commits AI :${NC} $ai_commits"
+  echo -e "  ${GREEN}Tags créés :${NC} $tags_created"
   
-  echo -e "\n${YELLOW}📈 Derniers 30 jours${NC}"
-  echo -e "├─ 📝 Commits : $recent_commits"
-  echo -e "├─ 📊 Moyenne/jour : $((recent_commits / 30))"
+  echo -e "\n${YELLOW} Derniers 30 jours${NC}"
+  echo -e "  Commits : $recent_commits"
+  echo -e "  Moyenne/jour : $((recent_commits / 30))"
   
   # Find most productive hour
   local prod_hour=$(jq -r '
@@ -184,7 +184,7 @@ show_personal_stats() {
     .hour // "N/A"
   ' "$STATS_FILE")
   
-  echo -e "└─ ⏰ Heure productive : ${prod_hour}h00"
+  echo -e "  Heure productive : ${prod_hour}h00"
   
   # Show streak
   calculate_streak
@@ -192,7 +192,7 @@ show_personal_stats() {
   # AI usage percentage
   if [[ $total_commits -gt 0 ]]; then
     local ai_percentage=$((ai_commits * 100 / total_commits))
-    echo -e "\n${CYAN}🤖 Utilisation AI : ${ai_percentage}%${NC}"
+    echo -e "\n${CYAN} Utilisation AI : ${ai_percentage}%${NC}"
     
     # Progress bar
     draw_progress_bar $ai_percentage 30
@@ -216,7 +216,7 @@ calculate_streak() {
   done
   
   if [[ $streak -gt 0 ]]; then
-    echo -e "\n🔥 ${GREEN}Streak actuel : $streak jours !${NC}"
+    echo -e "\n ${GREEN}Streak actuel : $streak jours !${NC}"
   fi
 }
 
@@ -235,27 +235,27 @@ draw_progress_bar() {
 
 # Show team stats (mock for now)
 show_team_stats() {
-  echo -e "\n${MAGENTA}👥 Statistiques d'Équipe${NC}"
+  echo -e "\n${MAGENTA} Statistiques d'Équipe${NC}"
   echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
   
   # TODO: implement real team stats once we have a backend
   # Mock data for demo
-  echo -e "🏆 ${YELLOW}Top Contributors (Cette semaine)${NC}"
-  echo -e "├─ 🥇 Alice : 47 commits"
-  echo -e "├─ 🥈 Bob : 31 commits"
-  echo -e "├─ 🥉 Charlie : 28 commits"
-  echo -e "└─ 👤 Toi : 23 commits (#4)"
+  echo -e " ${YELLOW}Top Contributors (Cette semaine)${NC}"
+  echo -e "  Alice : 47 commits"
+  echo -e "  Bob : 31 commits"
+  echo -e "  Charlie : 28 commits"
+  echo -e "  Toi : 23 commits (#4)"
   
-  echo -e "\n📈 ${YELLOW}Métriques du Projet${NC}"
-  echo -e "├─ 🔥 Fichier le plus modifié : src/main.js (89 changes)"
-  echo -e "├─ 📊 Vélocité : ↗️ +23% vs semaine dernière"
-  echo -e "├─ 🎯 Completion sprint : 78%"
-  echo -e "└─ 🐛 Bugs résolus : 12/15"
+  echo -e "\n ${YELLOW}Métriques du Projet${NC}"
+  echo -e "  Fichier le plus modifié : src/main.js (89 changes)"
+  echo -e "  Vélocité :  +23% vs semaine dernière"
+  echo -e "  Completion sprint : 78%"
+  echo -e "  Bugs résolus : 12/15"
   
-  echo -e "\n🌟 ${YELLOW}Achievements débloqués${NC}"
-  echo -e "├─ 🎖️ Early Bird (commit avant 7h)"
-  echo -e "├─ 🌙 Night Owl (commit après 23h)"
-  echo -e "└─ 📈 Productivity Master (30+ commits/semaine)"
+  echo -e "\n ${YELLOW}Achievements débloqués${NC}"
+  echo -e "  Early Bird (commit avant 7h)"
+  echo -e "  Night Owl (commit après 23h)"
+  echo -e "  Productivity Master (30+ commits/semaine)"
 }
 
 # Export weekly report
@@ -264,22 +264,22 @@ export_weekly_report() {
   local report_file="$HOME/.gitpush/weekly_report_$(date +%Y-%m-%d).md"
   
   cat > "$report_file" << 'EOF'
-# 📊 Gitpush Weekly Report
+# Gitpush Weekly Report
 
 **Period**: Last 7 days  
 **Generated**: $(date)
 
-## 📈 Personal Stats
+##  Personal Stats
 - Total commits: X
 - Issues closed: Y
 - AI usage: Z%
 
-## 🏆 Achievements
+##  Achievements
 - [x] Maintained daily streak
 - [x] Used AI for complex commits
 - [ ] Created 10+ issues
 
-## 💡 Insights
+##  Insights
 - Most productive hour: 14h00
 - Favorite branch type: feature/
 - Average commits/day: 8
@@ -288,21 +288,21 @@ export_weekly_report() {
 Generated by Gitpush Analytics
 EOF
 
-  echo -e "${GREEN}✅ Rapport exporté : $report_file${NC}"
+  echo -e "${GREEN} Rapport exporté : $report_file${NC}"
 }
 
 # Main analytics menu
 analytics_menu() {
-  echo -e "\n${MAGENTA}📊 Gitpush Analytics${NC}"
+  echo -e "\n${MAGENTA} Gitpush Analytics${NC}"
   
-  PS3=$'\n👉 Que veux-tu analyser ? '
+  PS3=$'\n Que veux-tu analyser ? '
   options=(
-    "📊 Mes statistiques"
-    "👥 Stats de l'équipe"
-    "📈 Graphiques"
-    "📄 Exporter rapport"
-    "🔄 Rafraîchir"
-    "🔙 Retour"
+    " Mes statistiques"
+    " Stats de l'équipe"
+    " Graphiques"
+    " Exporter rapport"
+    " Rafraîchir"
+    " Retour"
   )
   
   select opt in "${options[@]}"; do
@@ -314,14 +314,14 @@ analytics_menu() {
         show_team_stats
         ;;
       3)
-        echo -e "${CYAN}📈 Ouverture du dashboard web...${NC}"
+        echo -e "${CYAN} Ouverture du dashboard web...${NC}"
         echo -e "${YELLOW}(Feature coming in v0.6.0)${NC}"
         ;;
       4)
         export_weekly_report
         ;;
       5)
-        echo -e "${CYAN}🔄 Rafraîchissement...${NC}"
+        echo -e "${CYAN} Rafraîchissement...${NC}"
         analytics_menu
         break
         ;;
@@ -329,7 +329,7 @@ analytics_menu() {
         break
         ;;
       *)
-        echo -e "${RED}❌ Choix invalide${NC}"
+        echo -e "${RED} Choix invalide${NC}"
         ;;
     esac
     echo

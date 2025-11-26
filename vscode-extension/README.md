@@ -4,11 +4,11 @@
 
 ## Features
 
-- **🤖 Smart Commits**: AI-generated commit messages with one click
-- **📝 Issue Management**: Create GitHub issues directly from VS Code
-- **📊 Analytics Dashboard**: View your Git stats and productivity metrics
-- **🔍 AI Code Review**: Get intelligent feedback before committing
-- **⚙️ Easy Configuration**: Set up AI providers without leaving VS Code
+- **Smart Commits**: AI-generated commit messages with one click
+- **Issue Management**: Create GitHub issues directly from VS Code
+- **Analytics Dashboard**: View your Git stats and productivity metrics
+- **AI Code Review**: Get intelligent feedback before committing
+- **Easy Configuration**: Set up AI providers without leaving VS Code
 
 ## Installation
 
@@ -53,6 +53,6 @@
 ## Why VS Code Extension?
 
 - **Seamless workflow**: No context switching
-- **Visual feedback**: Rich UI for stats and suggestions  
+- **Visual feedback**: Rich UI for stats and suggestions
 - **Easy adoption**: Discover gitpush while coding
 - **Team onboarding**: Share extension in team workspaces

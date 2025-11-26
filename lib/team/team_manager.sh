@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# 👥 Gitpush Team Manager
+#  Gitpush Team Manager
 # Collaboration features for teams
 
 # Colors
@@ -46,24 +46,24 @@ EOF
 setup_team() {
   init_team
   
-  echo -e "\n${MAGENTA}👥 Configuration de l'équipe${NC}"
+  echo -e "\n${MAGENTA} Configuration de l'équipe${NC}"
   
-  read -p "📝 Nom de l'équipe : " team_name
+  read -p " Nom de l'équipe : " team_name
   
   # Update config
   jq --arg name "$team_name" '.team_name = $name' "$TEAM_CONFIG" > "$TEAM_CONFIG.tmp" && \
     mv "$TEAM_CONFIG.tmp" "$TEAM_CONFIG"
   
-  echo -e "${GREEN}✅ Équipe '$team_name' configurée !${NC}"
+  echo -e "${GREEN} Équipe '$team_name' configurée !${NC}"
   
   # Add members
   echo -e "\n${CYAN}Ajouter des membres (email GitHub, vide pour terminer) :${NC}"
   while true; do
-    read -p "👤 Email : " email
+    read -p " Email : " email
     [[ -z "$email" ]] && break
     
-    read -p "📝 Nom : " name
-    read -p "🎭 Rôle (dev/lead/reviewer) : " role
+    read -p " Nom : " name
+    read -p " Rôle (dev/lead/reviewer) : " role
     
     jq --arg email "$email" --arg name "$name" --arg role "$role" \
       '.members += [{"email": $email, "name": $name, "role": $role}]' \
@@ -78,42 +78,42 @@ show_team_dashboard() {
   local team_name=$(jq -r '.team_name' "$TEAM_CONFIG")
   local member_count=$(jq '.members | length' "$TEAM_CONFIG")
   
-  echo -e "\n${MAGENTA}👥 Dashboard Équipe : $team_name${NC}"
+  echo -e "\n${MAGENTA} Dashboard Équipe : $team_name${NC}"
   echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
   
   # Team stats
-  echo -e "\n${YELLOW}📊 Statistiques de la semaine${NC}"
-  echo -e "├─ 👥 Membres actifs : $member_count"
-  echo -e "├─ 📝 Commits équipe : 234"
-  echo -e "├─ 🔀 PRs merged : 18"
-  echo -e "├─ 🐛 Bugs résolus : 12/15"
-  echo -e "└─ 📈 Vélocité : +23%"
+  echo -e "\n${YELLOW} Statistiques de la semaine${NC}"
+  echo -e "  Membres actifs : $member_count"
+  echo -e "  Commits équipe : 234"
+  echo -e "  PRs merged : 18"
+  echo -e "  Bugs résolus : 12/15"
+  echo -e "  Vélocité : +23%"
   
   # Active PRs
-  echo -e "\n${YELLOW}🔀 Pull Requests actives${NC}"
-  echo -e "├─ #142 feat: new auth system (Alice) - 3 reviews ✅"
-  echo -e "├─ #141 fix: memory leak (Bob) - awaiting review ⏳"
-  echo -e "└─ #140 docs: API update (Charlie) - changes requested 🔄"
+  echo -e "\n${YELLOW} Pull Requests actives${NC}"
+  echo -e " #142 feat: new auth system (Alice) - 3 reviews "
+  echo -e " #141 fix: memory leak (Bob) - awaiting review ⏳"
+  echo -e " #140 docs: API update (Charlie) - changes requested "
   
   # Team activity
-  echo -e "\n${YELLOW}📅 Activité récente${NC}"
-  echo -e "├─ 09:15 Alice: Pushed to feature/auth"
-  echo -e "├─ 09:42 Bob: Created PR #141"
-  echo -e "├─ 10:03 Charlie: Reviewed PR #142"
-  echo -e "└─ 10:30 Team standup completed ✅"
+  echo -e "\n${YELLOW} Activité récente${NC}"
+  echo -e " 09:15 Alice: Pushed to feature/auth"
+  echo -e " 09:42 Bob: Created PR #141"
+  echo -e " 10:03 Charlie: Reviewed PR #142"
+  echo -e " 10:30 Team standup completed "
 }
 
 # Shared workflows
 manage_workflows() {
-  echo -e "\n${MAGENTA}🔄 Workflows d'équipe${NC}"
+  echo -e "\n${MAGENTA} Workflows d'équipe${NC}"
   
-  PS3=$'\n👉 Action ? '
+  PS3=$'\n Action ? '
   options=(
-    "📋 Lister les workflows"
-    "➕ Créer un workflow"
-    "📤 Partager un workflow"
-    "📥 Importer un workflow"
-    "🔙 Retour"
+    " Lister les workflows"
+    " Créer un workflow"
+    " Partager un workflow"
+    " Importer un workflow"
+    " Retour"
   )
   
   select opt in "${options[@]}"; do
@@ -139,10 +139,10 @@ manage_workflows() {
 
 # Create team workflow
 create_team_workflow() {
-  echo -e "\n${GREEN}➕ Nouveau workflow d'équipe${NC}"
+  echo -e "\n${GREEN} Nouveau workflow d'équipe${NC}"
   
-  read -p "📝 Nom du workflow : " wf_name
-  read -p "📄 Description : " wf_desc
+  read -p " Nom du workflow : " wf_name
+  read -p " Description : " wf_desc
   
   cat > "$TEAM_DIR/workflows/${wf_name}.json" << EOF
 {
@@ -163,7 +163,7 @@ create_team_workflow() {
 }
 EOF
   
-  echo -e "${GREEN}✅ Workflow '$wf_name' créé !${NC}"
+  echo -e "${GREEN} Workflow '$wf_name' créé !${NC}"
 }
 
 # Code review assignment
@@ -179,20 +179,20 @@ auto_assign_reviewer() {
 
 # Daily standup
 daily_standup() {
-  echo -e "\n${MAGENTA}☀️ Daily Standup${NC}"
+  echo -e "\n${MAGENTA} Daily Standup${NC}"
   echo -e "${CYAN}$(date '+%A %d %B %Y')${NC}"
   echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
   
   local members=$(jq -r '.members[].name' "$TEAM_CONFIG")
   
   for member in $members; do
-    echo -e "\n${YELLOW}👤 $member${NC}"
-    echo "📅 Hier : Completed auth module"
-    echo "📆 Aujourd'hui : Working on tests"
-    echo "🚧 Blockers : None"
+    echo -e "\n${YELLOW} $member${NC}"
+    echo " Hier : Completed auth module"
+    echo " Aujourd'hui : Working on tests"
+    echo " Blockers : None"
   done
   
-  echo -e "\n${GREEN}✅ Standup complété !${NC}"
+  echo -e "\n${GREEN} Standup complété !${NC}"
   
   # Save standup
   local standup_file="$TEAM_DIR/standups/$(date +%Y-%m-%d).md"
@@ -224,24 +224,24 @@ send_team_notification() {
 
 # Team integrations
 configure_integrations() {
-  echo -e "\n${MAGENTA}🔌 Configuration des intégrations${NC}"
+  echo -e "\n${MAGENTA} Configuration des intégrations${NC}"
   
-  PS3=$'\n👉 Configurer ? '
+  PS3=$'\n Configurer ? '
   options=("Slack" "Discord" "Microsoft Teams" "Email" "Retour")
   
   select opt in "${options[@]}"; do
     case $REPLY in
       1)
-        read -p "🔗 Webhook Slack : " webhook
+        read -p " Webhook Slack : " webhook
         jq --arg wh "$webhook" '.integrations.slack = $wh' "$TEAM_CONFIG" > "$TEAM_CONFIG.tmp" && \
           mv "$TEAM_CONFIG.tmp" "$TEAM_CONFIG"
-        echo -e "${GREEN}✅ Slack configuré${NC}"
+        echo -e "${GREEN} Slack configuré${NC}"
         ;;
       2)
-        read -p "🔗 Webhook Discord : " webhook
+        read -p " Webhook Discord : " webhook
         jq --arg wh "$webhook" '.integrations.discord = $wh' "$TEAM_CONFIG" > "$TEAM_CONFIG.tmp" && \
           mv "$TEAM_CONFIG.tmp" "$TEAM_CONFIG"
-        echo -e "${GREEN}✅ Discord configuré${NC}"
+        echo -e "${GREEN} Discord configuré${NC}"
         ;;
       3)
         echo -e "${YELLOW}Teams integration coming soon...${NC}"
@@ -258,7 +258,7 @@ configure_integrations() {
 
 # Team analytics
 show_team_analytics() {
-  echo -e "\n${MAGENTA}📊 Analytics d'équipe${NC}"
+  echo -e "\n${MAGENTA} Analytics d'équipe${NC}"
   
   # Contribution chart
   echo -e "\n${YELLOW}Contributions (7 derniers jours)${NC}"
@@ -269,35 +269,35 @@ show_team_analytics() {
   
   # Code ownership
   echo -e "\n${YELLOW}Code Ownership${NC}"
-  echo "├─ src/auth/*    → Alice (67%)"
-  echo "├─ src/api/*     → Bob (54%)"
-  echo "├─ src/ui/*      → Charlie (71%)"
-  echo "└─ tests/*       → Team (distributed)"
+  echo " src/auth/*    → Alice (67%)"
+  echo " src/api/*     → Bob (54%)"
+  echo " src/ui/*      → Charlie (71%)"
+  echo " tests/*       → Team (distributed)"
   
   # PR metrics
   echo -e "\n${YELLOW}Métriques PR${NC}"
-  echo "├─ ⏱️ Temps moyen de review : 4.2 heures"
-  echo "├─ 🔄 Iterations moyennes : 2.1"
-  echo "├─ ✅ Taux d'approbation : 94%"
-  echo "└─ 📊 PRs par semaine : 22"
+  echo "  Temps moyen de review : 4.2 heures"
+  echo "  Iterations moyennes : 2.1"
+  echo "  Taux d'approbation : 94%"
+  echo "  PRs par semaine : 22"
 }
 
 # Main team menu
 team_menu() {
   init_team
   
-  echo -e "\n${MAGENTA}👥 Gitpush Team Features${NC}"
+  echo -e "\n${MAGENTA} Gitpush Team Features${NC}"
   
-  PS3=$'\n👉 Que veux-tu faire ? '
+  PS3=$'\n Que veux-tu faire ? '
   options=(
-    "📊 Dashboard équipe"
-    "👥 Gérer l'équipe"
-    "🔄 Workflows partagés"
-    "☀️ Daily standup"
-    "📈 Analytics équipe"
-    "🔌 Intégrations"
-    "🔔 Notifications"
-    "🔙 Retour"
+    " Dashboard équipe"
+    " Gérer l'équipe"
+    " Workflows partagés"
+    " Daily standup"
+    " Analytics équipe"
+    " Intégrations"
+    " Notifications"
+    " Retour"
   )
   
   select opt in "${options[@]}"; do
@@ -321,8 +321,8 @@ team_menu() {
         configure_integrations
         ;;
       7)
-        send_team_notification "Test notification from Gitpush! 🚀"
-        echo -e "${GREEN}✅ Notification envoyée${NC}"
+        send_team_notification "Test notification from Gitpush! "
+        echo -e "${GREEN} Notification envoyée${NC}"
         ;;
       8)
         break

@@ -34,30 +34,30 @@ gitpush
 
 ## Features
 
-### 🚀 **Smart Workflows**
+### Smart Workflows
 - Interactive Git operations with safety checks
 - Automatic branch protection for main/master
 - Smart tag generation with semantic versioning
 - GitHub release automation
 
-### 🤖 **AI Integration**
+### AI Integration
 - AI-powered commit message generation
 - Code review and security analysis
 - Support for OpenAI, Anthropic, Google, and local models
 - Intelligent conflict resolution
 
-### 📋 **Issue Management**
+### Issue Management
 - Create and manage GitHub issues
 - Auto-link commits to issues
 - Smart label management
 - Issue auto-closure via commit keywords
 
-### 👥 **Team Features**
+### Team Features
 - Team statistics and analytics
 - Shared workflows and templates
 - Productivity tracking and insights
 
-### 🔌 **Extensions**
+### Extensions
 - VS Code extension for seamless integration
 - Plugin system for custom workflows
 - Multiple installation methods
@@ -149,21 +149,21 @@ $ gitpush
 Current branch: feature/auth
 Repository: my-app
 
-🤖 AI analyzing changes...
-📝 Suggested: "feat(auth): implement JWT authentication with user sessions"
+AI analyzing changes...
+Suggested: "feat(auth): implement JWT authentication with user sessions"
 
-✅ Use this message? (Y/n): y
-🔄 Pull before push? (y/N): y
-🏷️ Create tag? (y/N): n
-🚀 Push to GitHub? (Y/n): y
+Use this message? (Y/n): y
+Pull before push? (y/N): y
+Create tag? (y/N): n
+Push to GitHub? (Y/n): y
 
-✅ Done! View at: https://github.com/user/repo/commit/abc123
+Done! View at: https://github.com/user/repo/commit/abc123
 ```
 
 ### Issue Management
 ```bash
 $ gitpush --issues
-📋 Open Issues:
+Open Issues:
 #42 Add dark mode support [enhancement]
 #41 Fix mobile layout [bug]
 
@@ -173,7 +173,7 @@ $ gitpush --issues
 Your choice: 2
 Title: Add user avatars
 Labels: enhancement, ui
-✅ Issue #43 created!
+Issue #43 created!
 ```
 
 ## Documentation
@@ -189,9 +189,9 @@ We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## Support
 
-- 🐛 [Issues](https://github.com/Karlblock/gitpush/issues)
-- 💬 [Discussions](https://github.com/Karlblock/gitpush/discussions)
-- 📧 Email: support@gitpush.dev
+- [Issues](https://github.com/Karlblock/gitpush/issues)
+- [Discussions](https://github.com/Karlblock/gitpush/discussions)
+- Email: support@gitpush.dev
 
 ## License
 
@@ -199,4 +199,4 @@ MIT © [Karl Block](https://github.com/Karlblock)
 
 ---
 
-**Made by developers, for developers** ❤️
+**Made by developers, for developers**

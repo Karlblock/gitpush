@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# 🤖 Gitpush AI Manager
+# Gitpush AI Manager
 # Handles all AI-related features for smart commits, reviews, etc.
 
 # Colors (duplicate from main script to avoid circular dependency)
@@ -246,30 +246,30 @@ perform_basic_code_checks() {
     if [[ -f "$file" ]]; then
       # Security checks
       if grep -qE "(api_key|password|secret|token|private_key)\s*=\s*[\"'][^\"']+[\"']" "$file"; then
-        issues_found+=("  🔐 ${RED}[CRITICAL]${NC} Secret hardcodé dans $file")
+        issues_found+=("  ${RED}[CRITICAL]${NC} Secret hardcode dans $file")
       fi
       
       # Debug statements
       if grep -qE "(console\\.log|print\\(|println\\(|debugger|pdb\\.set_trace)" "$file"; then
-        issues_found+=("  🐛 ${YELLOW}[WARNING]${NC} Debug statements dans $file")
+        issues_found+=("  ${YELLOW}[WARNING]${NC} Debug statements dans $file")
       fi
       
       # TODO/FIXME
       local todos=$(grep -c "TODO\|FIXME\|HACK\|XXX" "$file" 2>/dev/null || echo 0)
       if [[ $todos -gt 3 ]]; then
-        issues_found+=("  📝 ${YELLOW}[INFO]${NC} $todos TODO/FIXME dans $file")
+        issues_found+=("  ${YELLOW}[INFO]${NC} $todos TODO/FIXME dans $file")
       fi
       
       # Large files
       local lines=$(wc -l < "$file" 2>/dev/null || echo 0)
       if [[ $lines -gt 500 ]]; then
-        issues_found+=("  📏 ${YELLOW}[INFO]${NC} Fichier très long ($lines lignes) : $file")
+        issues_found+=("  ${YELLOW}[INFO]${NC} Fichier tres long ($lines lignes) : $file")
       fi
     fi
   done
   
   if [[ ${#issues_found[@]} -gt 0 ]]; then
-    echo -e "${YELLOW}⚠️ Analyse basique (mode offline) :${NC}"
+    echo -e "${YELLOW}Analyse basique (mode offline) :${NC}"
     printf '%s\n' "${issues_found[@]}"
     return 1
   fi
@@ -295,7 +295,7 @@ check_security_issues() {
   for pattern in "${security_patterns[@]}"; do
     for file in $files; do
       if grep -qE "$pattern" "$file" 2>/dev/null; then
-        echo -e "  🚨 ${RED}[SECURITY]${NC} Pattern dangereux '$pattern' dans $file"
+        echo -e "  ${RED}[SECURITY]${NC} Pattern dangereux '$pattern' dans $file"
       fi
     done
   done
@@ -311,7 +311,7 @@ check_code_quality() {
       # Check for very long lines
       # FIXME: 120 chars is arbitrary, should be configurable
       if grep -qE "^.{120,}$" "$file"; then
-        quality_issues+="  📐 ${YELLOW}[STYLE]${NC} Lignes trop longues dans $file\n"
+        quality_issues+="  ${YELLOW}[STYLE]${NC} Lignes trop longues dans $file\n"
       fi
       
       # Check for inconsistent indentation
@@ -319,7 +319,7 @@ check_code_quality() {
         local tabs=$(grep -c "^\t" "$file" 2>/dev/null || echo 0)
         local spaces=$(grep -c "^  " "$file" 2>/dev/null || echo 0)
         if [[ $tabs -gt 0 && $spaces -gt 0 ]]; then
-          quality_issues+="  🔧 ${YELLOW}[STYLE]${NC} Indentation mixte dans $file\n"
+          quality_issues+="  ${YELLOW}[STYLE]${NC} Indentation mixte dans $file\n"
         fi
       fi
     fi
@@ -449,43 +449,43 @@ ai_interactive_mode() {
 # --- Configure AI settings ---
 configure_ai_settings() {
   # WARNING: storing API keys in .bashrc is not ideal but it's what users expect
-  echo -e "\n${CYAN}🔧 Configuration AI${NC}"
+  echo -e "\n${CYAN}Configuration AI${NC}"
   echo -e "Provider actuel : ${YELLOW}${AI_PROVIDER:-non configuré}${NC}"
   
-  PS3=$'\n👉 Choisir un provider AI : '
+  PS3=$'\nChoisir un provider AI : '
   select provider in "OpenAI (GPT-4)" "Anthropic (Claude)" "Google (Gemini)" "Local (Ollama)" "Annuler"; do
     case $REPLY in
       1)
-        read -p "🔑 OpenAI API Key : " api_key
+        read -p "OpenAI API Key : " api_key
         if [[ -n "$api_key" ]]; then
           echo "export OPENAI_API_KEY='$api_key'" >> ~/.bashrc
           echo "export AI_PROVIDER='openai'" >> ~/.bashrc
-          echo -e "${GREEN}✅ OpenAI configuré !${NC}"
+          echo -e "${GREEN}OpenAI configure !${NC}"
         fi
         break
         ;;
       2)
-        read -p "🔑 Anthropic API Key : " api_key
+        read -p "Anthropic API Key : " api_key
         if [[ -n "$api_key" ]]; then
           echo "export ANTHROPIC_API_KEY='$api_key'" >> ~/.bashrc
           echo "export AI_PROVIDER='anthropic'" >> ~/.bashrc
-          echo -e "${GREEN}✅ Anthropic configuré !${NC}"
+          echo -e "${GREEN}Anthropic configure !${NC}"
         fi
         break
         ;;
       3)
-        read -p "🔑 Google API Key : " api_key
+        read -p "Google API Key : " api_key
         if [[ -n "$api_key" ]]; then
           echo "export GOOGLE_API_KEY='$api_key'" >> ~/.bashrc
           echo "export AI_PROVIDER='google'" >> ~/.bashrc
-          echo -e "${GREEN}✅ Google configuré !${NC}"
+          echo -e "${GREEN}Google configure !${NC}"
         fi
         break
         ;;
       4)
-        echo -e "${CYAN}📥 Installation Ollama : https://ollama.ai${NC}"
+        echo -e "${CYAN}Installation Ollama : https://ollama.ai${NC}"
         echo "export AI_PROVIDER='local'" >> ~/.bashrc
-        echo -e "${GREEN}✅ Mode local configuré !${NC}"
+        echo -e "${GREEN}Mode local configure !${NC}"
         break
         ;;
       5)

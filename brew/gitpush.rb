@@ -37,7 +37,7 @@ class Gitpush < Formula
 
   def caveats
     <<~EOS
-      Gitpush has been installed! 🚀
+      Gitpush has been installed!
 
       Quick start:
         gitpush --configure    # Set up AI providers

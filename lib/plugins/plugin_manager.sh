@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# 🔌 Gitpush Plugin Manager
+#  Gitpush Plugin Manager
 # Extensibility system for gitpush
 
 # Colors
@@ -63,7 +63,7 @@ load_single_plugin() {
   elif [[ -f "$SYSTEM_PLUGIN_DIR/$plugin_name/plugin.sh" ]]; then
     plugin_path="$SYSTEM_PLUGIN_DIR/$plugin_name/plugin.sh"
   else
-    echo -e "${YELLOW}⚠️ Plugin '$plugin_name' not found${NC}"
+    echo -e "${YELLOW} Plugin '$plugin_name' not found${NC}"
     return 1
   fi
   
@@ -112,7 +112,7 @@ execute_hook() {
 
 # List available plugins
 list_plugins() {
-  echo -e "\n${MAGENTA}🔌 Plugins Disponibles${NC}"
+  echo -e "\n${MAGENTA} Plugins Disponibles${NC}"
   echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
   
   # System plugins
@@ -123,7 +123,7 @@ list_plugins() {
         local name=$(basename "$plugin")
         local desc=$(jq -r '.description' "$plugin/plugin.json" 2>/dev/null || echo "No description")
         local version=$(jq -r '.version' "$plugin/plugin.json" 2>/dev/null || echo "?")
-        echo -e "  📦 ${GREEN}$name${NC} (v$version) - $desc"
+        echo -e "   ${GREEN}$name${NC} (v$version) - $desc"
       fi
     done
   fi
@@ -139,7 +139,7 @@ list_plugins() {
         local enabled=$(jq -r --arg name "$name" '.enabled | contains([$name])' "$PLUGIN_DIR/manifest.json")
         
         if [[ "$enabled" == "true" ]]; then
-          echo -e "  ✅ ${GREEN}$name${NC} (v$version) - $desc"
+          echo -e "   ${GREEN}$name${NC} (v$version) - $desc"
         else
           echo -e "  ⭕ ${YELLOW}$name${NC} (v$version) - $desc"
         fi
@@ -152,7 +152,7 @@ list_plugins() {
 install_plugin() {
   local plugin_name="$1"
   
-  echo -e "${CYAN}📥 Installation du plugin '$plugin_name'...${NC}"
+  echo -e "${CYAN} Installation du plugin '$plugin_name'...${NC}"
   
   # Check if it's a URL
   if [[ "$plugin_name" =~ ^https?:// ]]; then
@@ -169,15 +169,15 @@ install_plugin() {
       jq --arg name "$name" '.installed += [$name]' "$PLUGIN_DIR/manifest.json" > "$PLUGIN_DIR/manifest.json.tmp" && \
         mv "$PLUGIN_DIR/manifest.json.tmp" "$PLUGIN_DIR/manifest.json"
       
-      echo -e "${GREEN}✅ Plugin '$name' installé !${NC}"
+      echo -e "${GREEN} Plugin '$name' installé !${NC}"
     else
-      echo -e "${RED}❌ Invalid plugin structure${NC}"
+      echo -e "${RED} Invalid plugin structure${NC}"
       rm -rf "$temp_dir"
     fi
   else
     # Install from registry (future feature)
     # TODO: implement when we have a real plugin registry
-    echo -e "${YELLOW}⚠️ Plugin registry not yet available${NC}"
+    echo -e "${YELLOW} Plugin registry not yet available${NC}"
   fi
 }
 
@@ -189,7 +189,7 @@ toggle_plugin() {
   if [[ "$action" == "enable" ]]; then
     jq --arg name "$plugin_name" '.enabled += [$name] | .enabled |= unique' "$PLUGIN_DIR/manifest.json" > "$PLUGIN_DIR/manifest.json.tmp" && \
       mv "$PLUGIN_DIR/manifest.json.tmp" "$PLUGIN_DIR/manifest.json"
-    echo -e "${GREEN}✅ Plugin '$plugin_name' activé${NC}"
+    echo -e "${GREEN} Plugin '$plugin_name' activé${NC}"
   else
     jq --arg name "$plugin_name" '.enabled -= [$name]' "$PLUGIN_DIR/manifest.json" > "$PLUGIN_DIR/manifest.json.tmp" && \
       mv "$PLUGIN_DIR/manifest.json.tmp" "$PLUGIN_DIR/manifest.json"
@@ -199,17 +199,17 @@ toggle_plugin() {
 
 # Plugin management menu
 plugin_menu() {
-  echo -e "\n${MAGENTA}🔌 Gestion des Plugins${NC}"
+  echo -e "\n${MAGENTA} Gestion des Plugins${NC}"
   
-  PS3=$'\n👉 Que veux-tu faire ? '
+  PS3=$'\n Que veux-tu faire ? '
   options=(
-    "📋 Lister les plugins"
-    "📥 Installer un plugin"
-    "✅ Activer un plugin"
-    "❌ Désactiver un plugin"
-    "🗑️ Désinstaller un plugin"
-    "🔄 Recharger les plugins"
-    "🔙 Retour"
+    " Lister les plugins"
+    " Installer un plugin"
+    " Activer un plugin"
+    " Désactiver un plugin"
+    " Désinstaller un plugin"
+    " Recharger les plugins"
+    " Retour"
   )
   
   select opt in "${options[@]}"; do
@@ -218,32 +218,32 @@ plugin_menu() {
         list_plugins
         ;;
       2)
-        read -p "📦 URL ou nom du plugin : " plugin_url
+        read -p " URL ou nom du plugin : " plugin_url
         install_plugin "$plugin_url"
         ;;
       3)
-        read -p "📦 Nom du plugin à activer : " plugin_name
+        read -p " Nom du plugin à activer : " plugin_name
         toggle_plugin "$plugin_name" "enable"
         ;;
       4)
-        read -p "📦 Nom du plugin à désactiver : " plugin_name
+        read -p " Nom du plugin à désactiver : " plugin_name
         toggle_plugin "$plugin_name" "disable"
         ;;
       5)
-        read -p "📦 Nom du plugin à désinstaller : " plugin_name
+        read -p " Nom du plugin à désinstaller : " plugin_name
         # WARNING: no confirmation, just deletes the plugin
         rm -rf "$PLUGIN_DIR/$plugin_name"
-        echo -e "${GREEN}✅ Plugin désinstallé${NC}"
+        echo -e "${GREEN} Plugin désinstallé${NC}"
         ;;
       6)
         load_plugins
-        echo -e "${GREEN}✅ Plugins rechargés${NC}"
+        echo -e "${GREEN} Plugins rechargés${NC}"
         ;;
       7)
         break
         ;;
       *)
-        echo -e "${RED}❌ Choix invalide${NC}"
+        echo -e "${RED} Choix invalide${NC}"
         ;;
     esac
     echo

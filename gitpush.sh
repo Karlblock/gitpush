@@ -176,8 +176,8 @@ get_git_context() {
   
   repo_name=$(basename -s .git "$(git config --get remote.origin.url 2>/dev/null)")
 
-  echo -e "\n📍 Current branch: ${MAGENTA}$current_branch${NC}"
-  echo -e "📦 Repository: ${CYAN}${repo_name:-Unknown}${NC}"
+  echo -e "\n Current branch: ${MAGENTA}$current_branch${NC}"
+  echo -e " Repository: ${CYAN}${repo_name:-Unknown}${NC}"
 }
 
 # Check GitHub CLI
@@ -330,7 +330,7 @@ get_user_inputs() {
 
 # Summarize actions
 summarize_and_confirm() {
-  echo -e "\n📦 Summary:"
+  echo -e "\n Summary:"
   echo -e "• Commit: ${GREEN}$MSG${NC}"
   [[ "$DO_SYNC" =~ ^[yY]$ ]] && echo -e "• Pull: ${CYAN}enabled${NC}" || echo -e "• Pull: disabled"
   [[ "$DO_TAG" =~ ^[yY]$ ]] && echo -e "• Tag: ${YELLOW}${CUSTOM_TAG:-auto}${NC}" || echo -e "• Tag: none"

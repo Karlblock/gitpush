@@ -1,6 +1,6 @@
 # Contributing to gitpush
 
-Thank you for your interest in contributing to gitpush! 🎉
+Thank you for your interest in contributing to gitpush!
 
 ## Quick Start
 
@@ -43,26 +43,26 @@ test: add or update tests
 
 ## Areas for Contribution
 
-### 🐛 Bug Fixes
+### Bug Fixes
 - Check [open issues](https://github.com/Karlblock/gitpush/issues)
 - Reproduce the issue locally
 - Write a test that fails
 - Fix the issue
 - Verify the test passes
 
-### ✨ New Features
+### New Features
 - Discuss major features in issues first
 - Keep features focused and simple
 - Update documentation
 - Add comprehensive tests
 
-### 📚 Documentation
+### Documentation
 - Improve README clarity
 - Add examples and use cases
 - Fix typos and grammar
 - Translate to other languages
 
-### 🔌 Plugins
+### Plugins
 - Create new plugins in `plugins/` directory
 - Follow the plugin API structure
 - Include plugin documentation
@@ -107,9 +107,9 @@ test: add or update tests
 
 ## Need Help?
 
-- 💬 [Start a discussion](https://github.com/Karlblock/gitpush/discussions)
-- 🐛 [Report a bug](https://github.com/Karlblock/gitpush/issues)
-- 📧 Email: support@gitpush.dev
+- [Start a discussion](https://github.com/Karlblock/gitpush/discussions)
+- [Report a bug](https://github.com/Karlblock/gitpush/issues)
+- Email: support@gitpush.dev
 
 ## Recognition
 
@@ -118,4 +118,4 @@ Contributors are recognized in:
 - Project documentation
 - Special contributor badges
 
-Thank you for making gitpush better! 🚀
+Thank you for making gitpush better!

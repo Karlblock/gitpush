@@ -16,7 +16,7 @@ fi
 # Display installation success message
 cat << 'EOF'
 
-🚀 Gitpush installed successfully!
+Gitpush installed successfully!
 
 Quick start:
   gitpush --configure    # Set up AI providers

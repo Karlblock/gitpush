@@ -15,50 +15,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.0-beta] - 2025-06-28
 
-### 🎉 Major Beta Release
+### Major Beta Release
 
 This release represents months of intensive development, transforming gitpush from a simple script into a comprehensive Git automation platform with artificial intelligence.
 
-### ✨ Added
+### Added
 
-#### 🤖 AI Integration
+#### AI Integration
 - **Multi-provider support**: OpenAI, Anthropic Claude, Google Gemini, and local models (Ollama)
 - **Smart commit generation**: AI analyzes code changes and generates contextual commit messages
 - **AI-assisted conflict resolution**: Intelligent merge conflict resolution
 - **Code analysis**: Pre-commit security and quality scanning
 - **Flexible configuration**: Environment file support with `.env.example`
 
-#### 📊 Analytics & Statistics
+#### Analytics & Statistics
 - **Personal dashboard**: Comprehensive Git statistics and productivity metrics
 - **Team insights**: Collaboration metrics and team performance tracking
 - **Export capabilities**: JSON/CSV data export for external analysis
 - **Real-time tracking**: Live productivity monitoring
 
-#### 🖥️ Desktop Application
+#### Desktop Application
 - **Electron GUI**: Modern, intuitive interface for visual Git workflows
 - **Interactive timeline**: Visual commit history and branch management
 - **Configuration interface**: Easy setup without command line
 - **Cross-platform**: Foundation for Windows, macOS, and Linux support
 
-#### 👥 Team Collaboration
+#### Team Collaboration
 - **Multi-user support**: Team-based workflows with roles and permissions
 - **Shared templates**: Standardized commit message templates
 - **Custom workflows**: Team-specific automation pipelines
 - **Notifications**: Integration with Slack, Discord, and Teams
 
-#### 🔌 Plugin System
+#### Plugin System
 - **Extensible architecture**: Hook-based plugin system
 - **Plugin marketplace**: Community plugin sharing and discovery
 - **Easy development**: Standardized plugin API and templates
 - **Git hooks integration**: Custom pre/post-commit actions
 
-#### 🧪 Testing & Quality
+#### Testing & Quality
 - **Comprehensive test suite**: 35+ automated tests covering all features
 - **CI/CD integration**: Automated testing and quality checks
 - **Security scanning**: Hardcoded secret detection and security validation
 - **Performance monitoring**: Speed and resource usage optimization
 
-### 🔧 Enhanced
+### Enhanced
 
 #### Core Functionality
 - **Improved error handling**: Better error messages with contextual information
@@ -78,32 +78,32 @@ This release represents months of intensive development, transforming gitpush fr
 - **Auto-confirmation**: Streamlined workflow for power users
 - **Help system**: Comprehensive built-in documentation
 
-### 🐛 Fixed
+### Fixed
 - **Stats file corruption**: Implemented file locking to prevent concurrent access issues
 - **Branch names with spaces**: Proper handling of branch names containing special characters
 - **Repository name extraction**: Improved parsing for various Git URL formats
 - **Error propagation**: Better error handling and user feedback
 - **Memory usage**: Optimized performance for large repositories
 
-### 🔒 Security
+### Security
 - **Secret detection**: Automated scanning for hardcoded credentials
 - **Secure configuration**: Environment-based API key management
 - **Permission validation**: Proper file and directory permission handling
 - **Input sanitization**: Protection against command injection attacks
 
-### 📚 Documentation
+### Documentation
 - **Complete rewrite**: Professional documentation with examples
 - **Setup guides**: Step-by-step installation and configuration
 - **API documentation**: Comprehensive plugin development guide
 - **Troubleshooting**: Common issues and solutions
 
-### ⚡ Performance
+### Performance
 - **Faster startup**: Optimized initialization and module loading
 - **Reduced memory footprint**: Efficient resource usage
 - **Parallel processing**: Concurrent operations where possible
 - **Caching**: Smart caching for frequently accessed data
 
-### 🌐 Internationalization
+### Internationalization
 - **English interface**: Professional English-language interface
 - **UTF-8 support**: Proper handling of international characters
 - **Locale detection**: System locale-aware formatting

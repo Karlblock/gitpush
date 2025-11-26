@@ -1,8 +1,8 @@
-# 📦 Gitpush Installation Guide
+# Gitpush Installation Guide
 
 Multiple ways to install gitpush on your system. Choose the method that works best for you!
 
-## 🚀 Quick Install (Recommended)
+## Quick Install (Recommended)
 
 ```bash
 curl -sSL https://gitpush.dev/install.sh | bash
@@ -10,16 +10,16 @@ curl -sSL https://gitpush.dev/install.sh | bash
 
 This script automatically detects your system and uses the best installation method.
 
-## 📦 Package Managers
+## Package Managers
 
-### 🍺 Homebrew (macOS/Linux)
+### Homebrew (macOS/Linux)
 
 ```bash
 brew tap karlblock/gitpush
 brew install gitpush
 ```
 
-### 📦 APT (Ubuntu/Debian)
+### APT (Ubuntu/Debian)
 
 ```bash
 # Add repository
@@ -31,7 +31,7 @@ sudo apt update
 sudo apt install gitpush
 ```
 
-### 📦 YUM/DNF (RHEL/Fedora)
+### YUM/DNF (RHEL/Fedora)
 
 ```bash
 # Add repository
@@ -42,13 +42,13 @@ sudo yum install gitpush       # RHEL/CentOS
 sudo dnf install gitpush       # Fedora
 ```
 
-### 📦 npm (Node.js)
+### npm (Node.js)
 
 ```bash
 npm install -g gitpush-cli
 ```
 
-## 🔧 Manual Installation
+## Manual Installation
 
 ### From Release Archive
 
@@ -76,9 +76,9 @@ cd gitpush
 sudo make install  # Coming soon
 ```
 
-## 🎯 Platform-Specific Instructions
+## Platform-Specific Instructions
 
-### 🪟 Windows
+### Windows
 
 #### Option 1: WSL (Recommended)
 ```bash
@@ -99,7 +99,7 @@ scoop bucket add gitpush https://github.com/karlblock/scoop-gitpush
 scoop install gitpush
 ```
 
-### 🍎 macOS
+### macOS
 
 #### Option 1: Homebrew (Recommended)
 ```bash
@@ -112,11 +112,11 @@ brew install gitpush
 sudo port install gitpush
 ```
 
-### 🐧 Linux
+### Linux
 
 Choose the package manager method for your distribution above, or use the universal installer.
 
-## ✅ Verify Installation
+## Verify Installation
 
 ```bash
 # Check version
@@ -129,7 +129,7 @@ gitpush --help
 gitpush --test
 ```
 
-## ⚙️ Post-Installation Setup
+## Post-Installation Setup
 
 ### 1. Configure AI Providers
 
@@ -139,7 +139,7 @@ gitpush --configure
 
 This will help you set up:
 - OpenAI API key
-- Anthropic API key  
+- Anthropic API key
 - Google AI API key
 - Local AI (Ollama)
 
@@ -157,7 +157,7 @@ gitpush --ai-commit
 
 Install the "Gitpush" extension from VS Code marketplace for seamless editor integration.
 
-## 🔧 Configuration Files
+## Configuration Files
 
 After installation, gitpush uses these config locations:
 
@@ -173,7 +173,7 @@ Example configurations are installed at:
 - `/usr/local/share/gitpush/.env.example`
 - `/usr/local/share/gitpush/.gitpush.config.example`
 
-## 🚨 Troubleshooting
+## Troubleshooting
 
 ### Command Not Found
 
@@ -206,7 +206,7 @@ gitpush --configure
 gitpush --ai --test
 ```
 
-## 🔄 Updates
+## Updates
 
 ### Homebrew
 ```bash
@@ -228,7 +228,7 @@ npm update -g gitpush-cli
 curl -sSL https://gitpush.dev/install.sh | bash
 ```
 
-## 🗑️ Uninstallation
+## Uninstallation
 
 ### Homebrew
 ```bash
@@ -255,13 +255,13 @@ sudo rm -rf /usr/local/share/gitpush
 rm -rf ~/.gitpush  # Remove user config
 ```
 
-## 🆘 Support
+## Support
 
-- 📚 [Documentation](https://gitpush.dev/docs)
-- 🐛 [Issue Tracker](https://github.com/karlblock/gitpush/issues)
-- 💬 [Community Discord](https://discord.gg/gitpush)
-- 📧 [Email Support](mailto:support@gitpush.dev)
+- [Documentation](https://gitpush.dev/docs)
+- [Issue Tracker](https://github.com/karlblock/gitpush/issues)
+- [Community Discord](https://discord.gg/gitpush)
+- [Email Support](mailto:support@gitpush.dev)
 
 ---
 
-**Ready to revolutionize your Git workflow?** Choose your preferred installation method above! 🚀
+**Ready to revolutionize your Git workflow?** Choose your preferred installation method above!

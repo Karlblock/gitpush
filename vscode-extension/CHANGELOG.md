@@ -11,11 +11,11 @@
 - **Custom Path Support**: Override CLI location in settings
 
 ### Features
-- 🤖 AI-powered commit message generation
-- 📝 GitHub issue creation workflow
-- 📊 Analytics dashboard integration
-- 🔍 AI code review capabilities
-- ⚙️ Easy AI provider configuration
+- AI-powered commit message generation
+- GitHub issue creation workflow
+- Analytics dashboard integration
+- AI code review capabilities
+- Easy AI provider configuration
 
 ### Developer Experience
 - TypeScript 5.0+ support

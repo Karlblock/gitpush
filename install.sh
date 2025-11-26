@@ -137,9 +137,9 @@ run_tests() {
     echo -e "${CYAN}Running quick verification...${NC}"
     
     if "$INSTALL_DIR/gitpush.sh" --version >/dev/null 2>&1; then
-        echo -e "${GREEN}✓ Gitpush command works${NC}"
+        echo -e "${GREEN} Gitpush command works${NC}"
     else
-        echo -e "${RED}✗ Gitpush command failed${NC}"
+        echo -e "${RED} Gitpush command failed${NC}"
         return 1
     fi
     
@@ -152,7 +152,7 @@ run_tests() {
 
 # Post-install configuration
 post_install() {
-    echo -e "\n${GREEN}🎉 Gitpush $VERSION installed successfully!${NC}\n"
+    echo -e "\n${GREEN} Gitpush $VERSION installed successfully!${NC}\n"
     
     echo -e "${CYAN}Quick start:${NC}"
     echo "  gitpush --help                 # Show help"
@@ -172,9 +172,9 @@ post_install() {
     
     # Check if gitpush is in PATH
     if command -v gitpush >/dev/null 2>&1; then
-        echo -e "${GREEN}✓ gitpush is ready to use!${NC}"
+        echo -e "${GREEN} gitpush is ready to use!${NC}"
     else
-        echo -e "${YELLOW}⚠ You may need to restart your terminal or run:${NC}"
+        echo -e "${YELLOW} You may need to restart your terminal or run:${NC}"
         echo "  export PATH=\"$BIN_DIR:\$PATH\""
     fi
     
@@ -237,7 +237,7 @@ EOF
     run_tests
     post_install
     
-    echo -e "\n${GREEN}🚀 Happy git-ing with gitpush!${NC}"
+    echo -e "\n${GREEN} Happy git-ing with gitpush!${NC}"
 }
 
 # Run installer

@@ -1,12 +1,12 @@
 # gitpush Roadmap
 
-## Current Status: v1.2.0 ✅
+## Current Status: v1.2.0
 
 gitpush is now feature-complete with multi-platform distribution support.
 
-## Completed Features ✅
+## Completed Features
 
-### v1.0.0 - Core Features ✅
+### v1.0.0 - Core Features
 - [x] Smart Git workflow automation
 - [x] AI integration (OpenAI, Anthropic, Google, Local)
 - [x] GitHub issues management
@@ -14,14 +14,14 @@ gitpush is now feature-complete with multi-platform distribution support.
 - [x] GitHub release automation
 - [x] Comprehensive test suite (94% coverage)
 
-### v1.1.0 - VS Code Extension ✅
+### v1.1.0 - VS Code Extension
 - [x] VS Code extension MVP ready
 - [x] Smart commit integration with AI
 - [x] Source control menu integration
 - [x] Status bar quick access
 - [x] Configuration UI for AI providers
 
-### v1.2.0 - Package Distribution ✅
+### v1.2.0 - Package Distribution
 - [x] Homebrew formula (macOS/Linux)
 - [x] Debian/Ubuntu packages (.deb)
 - [x] npm registry support
@@ -86,9 +86,9 @@ gitpush is now feature-complete with multi-platform distribution support.
 
 Have ideas for gitpush? We'd love to hear them!
 
-- 💬 [Discussions](https://github.com/Karlblock/gitpush/discussions)
-- 🐛 [Feature Requests](https://github.com/Karlblock/gitpush/issues)
-- 📧 Email: roadmap@gitpush.dev
+- [Discussions](https://github.com/Karlblock/gitpush/discussions)
+- [Feature Requests](https://github.com/Karlblock/gitpush/issues)
+- Email: roadmap@gitpush.dev
 
 ---
 

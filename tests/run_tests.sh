@@ -26,10 +26,10 @@ assert_equals() {
   ((TESTS_RUN++))
   
   if [[ "$expected" == "$actual" ]]; then
-    echo -e "${GREEN}✅ PASS${NC}: $test_name"
+    echo -e "${GREEN}[PASS]${NC}: $test_name"
     ((TESTS_PASSED++))
   else
-    echo -e "${RED}❌ FAIL${NC}: $test_name"
+    echo -e "${RED}[FAIL]${NC}: $test_name"
     echo "    Expected: $expected"
     echo "    Actual: $actual"
     ((TESTS_FAILED++))
@@ -44,10 +44,10 @@ assert_contains() {
   ((TESTS_RUN++))
   
   if [[ "$haystack" =~ $needle ]]; then
-    echo -e "${GREEN}✅ PASS${NC}: $test_name"
+    echo -e "${GREEN}[PASS]${NC}: $test_name"
     ((TESTS_PASSED++))
   else
-    echo -e "${RED}❌ FAIL${NC}: $test_name"
+    echo -e "${RED}[FAIL]${NC}: $test_name"
     echo "    Should contain: $needle"
     ((TESTS_FAILED++))
   fi
@@ -60,10 +60,10 @@ assert_file_exists() {
   ((TESTS_RUN++))
   
   if [[ -f "$file" ]]; then
-    echo -e "${GREEN}✅ PASS${NC}: $test_name"
+    echo -e "${GREEN}[PASS]${NC}: $test_name"
     ((TESTS_PASSED++))
   else
-    echo -e "${RED}❌ FAIL${NC}: $test_name"
+    echo -e "${RED}[FAIL]${NC}: $test_name"
     echo "    File not found: $file"
     ((TESTS_FAILED++))
   fi
@@ -106,10 +106,10 @@ test_ai_features() {
   
   # Check if AI modules exist
   if [[ -f "../lib/ai/ai_manager.sh" ]]; then
-    echo -e "${GREEN}✅ PASS${NC}: AI manager exists"
+    echo -e "${GREEN}[PASS]${NC}: AI manager exists"
     ((TESTS_PASSED++))
   else
-    echo -e "${YELLOW}⚠️ SKIP${NC}: AI manager not found (optional)"
+    echo -e "${YELLOW}[SKIP]${NC}: AI manager not found (optional)"
   fi
   ((TESTS_RUN++))
 }
@@ -123,10 +123,10 @@ test_configuration() {
   
   # Test executable permissions
   if [[ -x "../gitpush.sh" ]]; then
-    echo -e "${GREEN}✅ PASS${NC}: Main script is executable"
+    echo -e "${GREEN}[PASS]${NC}: Main script is executable"
     ((TESTS_PASSED++))
   else
-    echo -e "${RED}❌ FAIL${NC}: Main script is not executable"
+    echo -e "${RED}[FAIL]${NC}: Main script is not executable"
     ((TESTS_FAILED++))
   fi
   ((TESTS_RUN++))
@@ -143,10 +143,10 @@ test_performance() {
   local duration=$(( (end - start) / 1000000 ))
   
   if [[ $duration -lt 1000 ]]; then
-    echo -e "${GREEN}✅ PASS${NC}: Help command < 1000ms ($duration ms)"
+    echo -e "${GREEN}[PASS]${NC}: Help command < 1000ms ($duration ms)"
     ((TESTS_PASSED++))
   else
-    echo -e "${YELLOW}⚠️ SLOW${NC}: Help command took $duration ms"
+    echo -e "${YELLOW}[SLOW]${NC}: Help command took $duration ms"
   fi
   ((TESTS_RUN++))
 }
@@ -169,10 +169,10 @@ test_integration() {
   local sim_output=$("$(cd - > /dev/null && pwd)/gitpush.sh" --simulate --message "test commit" --yes 2>&1)
   
   if [[ "$sim_output" =~ (Simulate|simulation) ]]; then
-    echo -e "${GREEN}✅ PASS${NC}: Simulation mode works"
+    echo -e "${GREEN}[PASS]${NC}: Simulation mode works"
     ((TESTS_PASSED++))
   else
-    echo -e "${RED}❌ FAIL${NC}: Simulation mode doesn't work"
+    echo -e "${RED}[FAIL]${NC}: Simulation mode doesn't work"
     echo "    Output: $sim_output"
     ((TESTS_FAILED++))
   fi
@@ -186,7 +186,7 @@ test_integration() {
 # Run all tests
 run_all_tests() {
   echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-  echo -e "${CYAN}🧪 GITPUSH TEST SUITE v1.2.0${NC}"
+  echo -e "${CYAN}GITPUSH TEST SUITE v1.2.0${NC}"
   echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
   
   # Change to tests directory
@@ -202,7 +202,7 @@ run_all_tests() {
   
   # Summary
   echo -e "\n${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-  echo -e "${CYAN}📊 TEST SUMMARY${NC}"
+  echo -e "${CYAN}TEST SUMMARY${NC}"
   echo -e "Total tests: $TESTS_RUN"
   echo -e "${GREEN}Passed: $TESTS_PASSED${NC}"
   echo -e "${RED}Failed: $TESTS_FAILED${NC}"
@@ -211,10 +211,10 @@ run_all_tests() {
   echo -e "Pass rate: ${GREEN}${pass_rate}%${NC}"
   
   if [[ $TESTS_FAILED -eq 0 ]]; then
-    echo -e "\n${GREEN}🎉 ALL TESTS PASSED!${NC}"
+    echo -e "\n${GREEN}ALL TESTS PASSED!${NC}"
     exit 0
   else
-    echo -e "\n${RED}❌ SOME TESTS FAILED${NC}"
+    echo -e "\n${RED}SOME TESTS FAILED${NC}"
     exit 1
   fi
 }

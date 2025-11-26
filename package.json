@@ -9,7 +9,7 @@
   "scripts": {
     "install": "chmod +x gitpush.sh",
     "test": "bash tests/run_tests.sh",
-    "postinstall": "node -e \"console.log('\\n🚀 Gitpush installed! Run \\\"gitpush --configure\\\" to get started.\\n')\""
+    "postinstall": "node -e \"console.log('\\nGitpush installed! Run \\\"gitpush --configure\\\" to get started.\\n')\""
   },
   "repository": {
     "type": "git",
